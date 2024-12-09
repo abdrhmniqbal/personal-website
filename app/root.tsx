@@ -1,29 +1,30 @@
+import '@/assets/styles/app.css'
+import '@/assets/styles/themes.css'
+import MainLayout from '@/ui/layouts/main'
+import type { MetaFunction } from 'react-router'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 import { useNonce } from '@/lib/hooks/use-nonce'
-import type { MetaFunction } from 'react-router';
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router';
-import '@/app.css'
-import type { Route } from "./+types/root";
-
+import type { Route } from './+types/root'
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'React Router Hono on Cloudflare' },
+    { title: 'Iqbal Abdurrahman' },
     { name: 'description', content: `Your own captain's log` },
   ]
 }
 
 export const links: Route.LinksFunction = () => [
-    { rel: "preconnect", href: "https://fonts.googleapis.com" },
-    {
-      rel: "preconnect",
-      href: "https://fonts.gstatic.com",
-      crossOrigin: "anonymous",
-    },
-    {
-      rel: "stylesheet",
-      href: "https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap",
-    },
-  ];
+  { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
+  {
+    rel: 'preconnect',
+    href: 'https://fonts.gstatic.com',
+    crossOrigin: 'anonymous',
+  },
+  {
+    rel: 'stylesheet',
+    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+  },
+]
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const nonce = useNonce()
@@ -45,5 +46,9 @@ export function Layout({ children }: { children: React.ReactNode }) {
 }
 
 export default function App() {
-  return <Outlet />
+  return (
+    <MainLayout>
+      <Outlet />
+    </MainLayout>
+  )
 }
