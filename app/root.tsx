@@ -1,4 +1,5 @@
 import '@/assets/styles/app.css'
+import '@/assets/styles/mdx.css'
 import '@/assets/styles/themes.css'
 import MainLayout from '@/ui/layouts/main'
 import type { MetaFunction } from 'react-router'

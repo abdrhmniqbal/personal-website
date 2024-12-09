@@ -25,6 +25,7 @@
     "paths": {
       "@/*": ["./app/*"],
       "@/server/*": ["./server/*"],
+      "@/contents/generated": ["./.velite"]
     },
     "plugins": [{ "name": "@react-router/dev" }],
     // Vite takes care of building everything, not tsc.

@@ -40,7 +40,7 @@ export default function Hero() {
     },
   ]
   return (
-    <div className="flex w-full flex-col items-start space-y-4 pt-16">
+    <div className="flex min-h-[calc(100vh-72px)] w-full flex-col items-start space-y-4 pt-24">
       <TypewriterEffect
         words={words}
         className="text-2xl sm:text-2xl md:text-3xl lg:text-5xl"
@@ -51,7 +51,7 @@ export default function Hero() {
       </p>
       <div className="flex space-x-4">
         {socialLinks.map(({ href, icon: Icon, title }) => (
-          <Tooltip delay={0}>
+          <Tooltip delay={0} key={title}>
             <Tooltip.Trigger>
               <Link
                 to={href}

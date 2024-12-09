@@ -1,7 +1,7 @@
 import { getLoadContext } from '@/server/context'
+import { serveStatic } from '@hono/node-server/serve-static'
 import type { Context } from 'hono'
 import { contextStorage } from 'hono/context-storage'
-import { serveStatic } from '@hono/node-server/serve-static'
 import { poweredBy } from 'hono/powered-by'
 import { NONCE, secureHeaders } from 'hono/secure-headers'
 import { trimTrailingSlash } from 'hono/trailing-slash'
@@ -44,13 +44,11 @@ export default await createHonoServer({
       '*',
       secureHeaders({
         contentSecurityPolicy: {
-          connectSrc: isProductionMode
-            ? ["'self'"]
-            : ["'self'", 'ws:'],
+          connectSrc: isProductionMode ? ["'self'"] : ["'self'", 'ws:'],
           fontSrc: ["'self'", 'fonts.gstatic.com'],
           frameSrc: ["'self'"],
           imgSrc: ["'self'", 'data:'],
-          scriptSrc: [NONCE, "'strict-dynamic'", "'self'"],
+          scriptSrc: [NONCE, "'strict-dynamic'", "'self'", "'unsafe-eval'"],
           scriptSrcAttr: [NONCE],
           upgradeInsecureRequests: [],
         },
@@ -61,17 +59,17 @@ export default await createHonoServer({
      * Serve static files on development mode.
      */
     if (!isProductionMode) {
-        server.use('*', serveStatic({ root: '/public' }))
+      server.use('*', serveStatic({ root: '/public' }))
     }
 
     /**
      * Api Route Example
      */
     server.get('/api', (c: Context<HonoApp, any, {}>) => {
-        return c.json({
-          message: 'Hello',      
-          var: c.env.APP_NAME
-        })
+      return c.json({
+        message: 'Hello',
+        var: c.env.APP_NAME,
+      })
     })
   },
 })

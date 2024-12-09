@@ -180,7 +180,7 @@ export const buttonStyles = tv(
 export interface ButtonProps extends ButtonPrimitiveProps {
   intent?: 'primary' | 'secondary' | 'destructive'
   size?: 'xs' | 'sm' | 'md' | 'lg' | 'xl'
-  appearance?: 'solid' | 'outline' | 'plain'
+  appearance?: 'solid' | 'outline' | 'plain' | 'link'
   shape?: 'square' | 'circle'
   layoutMode?: 'flexible' | 'full' | 'icon'
 }
