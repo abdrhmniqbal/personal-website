@@ -1,4 +1,5 @@
 import { posts } from '@/contents/generated'
+import { ClientOnly } from '@/ui/components/client-only'
 import { Container } from '@/ui/components/container'
 import { Mdx } from '@/ui/components/mdx/component'
 import type { Route } from './+types/post.$slug'
@@ -40,7 +41,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         )}
       </div>
       <hr className="my-4" />
-      <Mdx code={post.body} />
+      <ClientOnly>{() => <Mdx code={post.body} />}</ClientOnly>
     </Container>
   )
 }
