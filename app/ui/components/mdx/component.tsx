@@ -90,7 +90,7 @@ const components = {
   }: React.BlockquoteHTMLAttributes<HTMLQuoteElement>) => (
     <blockquote
       className={cn(
-        '[&>*]:text-muted-foreground mt-6 border-l-2 pl-6 italic',
+        'mt-6 border-l-2 pl-6 italic [&>*]:text-muted-foreground',
         className,
       )}
       {...props}
@@ -112,7 +112,7 @@ const components = {
   ),
   tr: ({ className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) => (
     <tr
-      className={cn('even:bg-muted m-0 border-t p-0', className)}
+      className={cn('m-0 border-t p-0 even:bg-muted', className)}
       {...props}
     />
   ),
@@ -150,7 +150,7 @@ const components = {
       <>
         <pre
           className={cn(
-            'bg-secondary mb-4 mt-6 overflow-x-auto rounded-lg border py-4',
+            'mb-4 mt-6 overflow-x-auto rounded-lg border bg-secondary py-4',
             className,
           )}
           {...props}
@@ -168,7 +168,7 @@ const components = {
   code: ({ className, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <code
       className={cn(
-        'text-secondary-foreground rounded px-[0.3rem] py-[0.2rem] font-mono text-sm',
+        'rounded rounded-sm border-[1px] border-border px-[0.3rem] py-[0.2rem] font-mono text-sm text-secondary-foreground',
         className,
       )}
       {...props}

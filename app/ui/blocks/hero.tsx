@@ -45,8 +45,8 @@ export default function Hero() {
         words={words}
         className="text-2xl sm:text-2xl md:text-3xl lg:text-5xl"
       />
-      <p className="text-muted-foreground text-base xl:w-2/3">
-        Hi! I'm a web developer residing in Bandung, passionate about crafting
+      <p className="text-base text-muted-foreground xl:w-2/3">
+        I am a web developer residing in Bandung, passionate about crafting
         intuitive, user-friendly, and performant web applications.
       </p>
       <div className="flex space-x-4">

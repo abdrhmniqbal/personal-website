@@ -3,7 +3,7 @@
 }
 
 [data-rehype-pretty-code-figure] pre {
-  @apply mt-0;
+  @apply my-4;
 }
 
 [data-rehype-pretty-code-figure] code {
@@ -40,4 +40,8 @@
 
 [data-rehype-pretty-code-title] {
   @apply mt-4 px-4 py-2 text-sm font-medium;
+}
+
+.mdx img {
+  @apply mx-auto mt-2 rounded-md;
 }

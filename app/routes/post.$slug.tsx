@@ -1,7 +1,11 @@
 import { posts } from '@/contents/generated'
+import { buttonStyles } from '@/ui/components/button'
 import { ClientOnly } from '@/ui/components/client-only'
 import { Container } from '@/ui/components/container'
 import { Mdx } from '@/ui/components/mdx/component'
+import { ArrowLeft02Icon } from 'hugeicons-react'
+import { Link } from 'react-router'
+import { formatDate } from '@/lib/utils/date'
 import type { Route } from './+types/post.$slug'
 
 async function getPageFromParams(params: string) {
@@ -36,15 +40,18 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   const { post } = loaderData
   return (
     <Container className="py-6 lg:py-12">
-      <div className="space-y-4">
-        <h1 className="inline-block text-4xl font-medium lg:text-5xl">
+      <Link to="/blog" className={buttonStyles({ appearance: 'outline' })}>
+        <ArrowLeft02Icon strokeWidth={2} />
+        See all posts
+      </Link>
+      <div className="mb-4 mt-6 flex flex-col">
+        <time className="text-sm text-muted-foreground">
+          Published on {formatDate(post.createdAt)}
+        </time>
+        <h1 className="mt-2 inline-block text-4xl font-semibold leading-tight lg:text-5xl">
           {post.title}
         </h1>
-        {post.summary && (
-          <p className="text-xl text-muted-foreground">{post.summary}</p>
-        )}
       </div>
-      <hr className="my-4" />
       <ClientOnly>{() => <Mdx code={post.body} />}</ClientOnly>
     </Container>
   )
