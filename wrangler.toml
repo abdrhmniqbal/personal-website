@@ -6,5 +6,5 @@ main = "./build/server/index.js"
 assets = { directory = "./build/client/" }
 
 [vars]
-APP_MODE = "development"
+APP_MODE = "production"
 APP_NAME = "Iqbal Abdurrahman"

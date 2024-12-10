@@ -5,7 +5,7 @@
 @layer utilities {
   .grid-background::before {
     content: '';
-    background-image: url(/images/grid.svg);
+    background-image: url(/static/images/grid.svg);
     position: absolute;
     top: 0px;
     right: 0px;
