@@ -15,16 +15,20 @@ async function getPageFromParams(params: string) {
 }
 
 export function meta({ data }: Route.MetaArgs) {
-  return [{ title: data ? data.post.title : 'Iqbal Abdurrahman' }]
+  return [
+    { title: data.post.title },
+    { name: 'description', content: data.post.summary },
+  ]
 }
 
-export async function loader({ params }: Route.LoaderArgs) {
+export async function loader({ params, context }: Route.LoaderArgs) {
   const post = await getPageFromParams(params.slug ? params.slug : '')
   if (!post) {
     throw new Response('Not Found', { status: 404 })
   }
   return {
     post,
+    APP_NAME: context.env.APP_NAME,
   }
 }
 
@@ -37,7 +41,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           {post.title}
         </h1>
         {post.summary && (
-          <p className="text-muted-foreground text-xl">{post.summary}</p>
+          <p className="text-xl text-muted-foreground">{post.summary}</p>
         )}
       </div>
       <hr className="my-4" />

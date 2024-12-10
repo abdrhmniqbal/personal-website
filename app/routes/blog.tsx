@@ -3,11 +3,18 @@ import PostCard from '@/ui/blocks/post-card'
 import { Container } from '@/ui/components/container'
 import type { Route } from './+types/blog'
 
-export async function loader() {
+export function meta({ data }: Route.MetaArgs) {
+  return [
+    { title: `Blog | ${data.APP_NAME}` },
+    { name: 'description', content: `Latest posts written by ${data.APP_NAME}.` },
+  ]
+}
+
+export async function loader({ context }: Route.LoaderArgs) {
   const latestPosts = posts.sort(
     (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
   )
-  return { latestPosts }
+  return { latestPosts, APP_NAME: context.env.APP_NAME }
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {

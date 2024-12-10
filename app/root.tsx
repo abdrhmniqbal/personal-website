@@ -1,16 +1,16 @@
 import '@/assets/styles/app.css'
 import '@/assets/styles/mdx.css'
 import '@/assets/styles/themes.css'
-import MainLayout from '@/ui/layouts/main'
-import type { MetaFunction } from 'react-router'
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 import { useNonce } from '@/lib/hooks/use-nonce'
+import MainLayout from '@/ui/layouts/main'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
 import type { Route } from './+types/root'
 
-export const meta: MetaFunction = () => {
+export function meta({ data }: Route.MetaArgs) {
   return [
-    { title: 'Iqbal Abdurrahman' },
-    { name: 'description', content: `Your own captain's log` },
+    { title: data.APP_NAME },
+    { name: 'description', content: `Web developer residing in Bandung, passionate about crafting
+        intuitive, user-friendly, and performant web applications.` },
   ]
 }
 
@@ -26,6 +26,12 @@ export const links: Route.LinksFunction = () => [
     href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
   },
 ]
+
+export function loader({ context }: Route.LoaderArgs) {
+  return {
+    APP_NAME: context.env.APP_NAME,
+  }
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const nonce = useNonce()
