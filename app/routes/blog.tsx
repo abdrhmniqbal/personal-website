@@ -6,7 +6,10 @@ import type { Route } from './+types/blog'
 export function meta({ data }: Route.MetaArgs) {
   return [
     { title: `Blog | ${data.APP_NAME}` },
-    { name: 'description', content: `Latest posts written by ${data.APP_NAME}.` },
+    {
+      name: 'description',
+      content: `Latest posts written by ${data.APP_NAME}.`,
+    },
   ]
 }
 

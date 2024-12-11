@@ -5,13 +5,11 @@
 @layer utilities {
   .grid-background::before {
     content: '';
-    background-image: url(/static/images/grid.svg);
-    position: absolute;
-    top: 0px;
-    right: 0px;
-    bottom: 0px;
-    left: 0px;
-    opacity: 0.03;
+    background-image: url('/static/images/grid.svg');
+    opacity: 0.05;
     z-index: -2;
+    mask-image: linear-gradient(to bottom, black, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, black, transparent);
+    @apply absolute bottom-0 left-0 right-0 top-0 dark:invert;
   }
 }

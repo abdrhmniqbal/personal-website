@@ -1,5 +1,4 @@
 import { buttonStyles } from '@/ui/components/button'
-import { Container } from '@/ui/components/container'
 import { NavLink } from 'react-router'
 
 const mainMenu = [
@@ -9,7 +8,7 @@ const mainMenu = [
 
 export default function Navbar() {
   return (
-    <Container className="relative flex h-full items-center justify-end py-4">
+    <header className="relative flex h-full items-center justify-end py-4">
       <div className="flex items-center">
         {mainMenu.map(({ title, href }) => (
           <NavLink
@@ -21,6 +20,6 @@ export default function Navbar() {
           </NavLink>
         ))}
       </div>
-    </Container>
+    </header>
   )
 }

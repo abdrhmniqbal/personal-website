@@ -3,6 +3,7 @@ import { z } from 'zod'
 const envSchema = z.object({
   APP_NAME: z.string(),
   APP_MODE: z.enum(['development', 'production', 'test']),
+  APP_URL: z.string(),
 })
 
 type APP_ENV = z.infer<typeof envSchema>
@@ -45,6 +46,8 @@ export const getClientEnv = () => {
   const serverEnv = env
   return {
     APP_MODE: serverEnv.APP_MODE,
+    APP_URL: serverEnv.APP_URL,
+    APP_NAME: serverEnv.APP_NAME,
   }
 }
 

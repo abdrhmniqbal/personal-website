@@ -63,7 +63,7 @@ const menuStyles = tv({
     menu: 'z32kk max-h-[calc(var(--visual-viewport-height)-10rem)] overflow-auto rounded-xl p-1 outline outline-0 [clip-path:inset(0_0_0_0_round_calc(var(--radius)-2px))] sm:max-h-[inherit]',
     popover: 'z-50 min-w-40 p-0 shadow-sm outline-none',
     trigger: [
-      'focus-visible:ring-primary pressed:outline-none relative inline text-left focus:outline-none focus-visible:ring-1',
+      'relative inline text-left focus:outline-none focus-visible:ring-1 focus-visible:ring-primary pressed:outline-none',
     ],
   },
 })
@@ -190,7 +190,7 @@ const Checkbox = ({ className, children, ...props }: MenuItemProps) => (
       <>
         {typeof children === 'function' ? children(values) : children}
         {values.isSelected && (
-          <span className="animate-in absolute right-2 flex size-4 shrink-0 items-center justify-center">
+          <span className="absolute right-2 flex size-4 shrink-0 items-center justify-center animate-in">
             <Tick02Icon strokeWidth={2} />
           </span>
         )}
@@ -208,7 +208,7 @@ const Radio = ({ className, children, ...props }: MenuItemProps) => (
         {values.isSelected && (
           <span
             data-slot="menu-radio"
-            className="animate-in absolute right-3 flex items-center justify-center"
+            className="absolute right-3 flex items-center justify-center animate-in"
           >
             <RadioIcon strokeWidth={2} />
           </span>

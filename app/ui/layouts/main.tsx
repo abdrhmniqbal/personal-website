@@ -1,4 +1,6 @@
+import { Footer } from '@/ui/blocks/footer'
 import Navbar from '@/ui/blocks/navbar'
+import { Container } from '@/ui/components/container'
 
 export default function MainLayout({
   children,
@@ -6,9 +8,10 @@ export default function MainLayout({
   children: React.ReactNode
 }) {
   return (
-    <div className="mx-auto flex w-full flex-col">
+    <Container className="mx-auto flex w-full flex-col">
       <Navbar />
       {children}
-    </div>
+      <Footer />
+    </Container>
   )
 }

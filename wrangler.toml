@@ -8,3 +8,4 @@ assets = { directory = "./build/client/" }
 [vars]
 APP_MODE = "production"
 APP_NAME = "Iqbal Abdurrahman"
+APP_URL = "https://abdrhmniqbal.my.id"

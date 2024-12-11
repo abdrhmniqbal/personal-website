@@ -4,7 +4,7 @@ import PostWidget from '@/ui/blocks/post-widget'
 import { Container } from '@/ui/components/container'
 import type { Route } from './+types/_index'
 
-export async function loader() {
+export async function loader({ context }: Route.LoaderArgs) {
   const latestPosts = posts
     .sort(
       (a, b) =>
