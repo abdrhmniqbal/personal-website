@@ -2,6 +2,7 @@ import { posts } from '@/contents/generated'
 import { buttonStyles } from '@/ui/components/button'
 import { ClientOnly } from '@/ui/components/client-only'
 import { Container } from '@/ui/components/container'
+import { Image } from '@/ui/components/image'
 import { Mdx } from '@/ui/components/mdx/component'
 import { ArrowLeft02Icon } from 'hugeicons-react'
 import { Link } from 'react-router'
@@ -51,6 +52,16 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         <h1 className="mt-2 inline-block text-4xl font-semibold leading-tight lg:text-5xl">
           {post.title}
         </h1>
+        {post.cover && (
+          <Image
+            src={post.cover.src}
+            alt={post.title}
+            layout="constrained"
+            width={post.cover.width}
+            height={post.cover.height}
+            className="mb-8 mt-4 rounded-lg border-[1px] border-border"
+          />
+        )}
       </div>
       <ClientOnly>{() => <Mdx code={post.body} />}</ClientOnly>
     </Container>
