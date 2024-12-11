@@ -18,7 +18,7 @@ export async function loader() {
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { latestPosts } = loaderData
   return (
-    <Container className="flex flex-col items-center justify-center">
+    <Container className="grid-background flex flex-col items-center justify-center">
       <Hero />
       <PostWidget posts={latestPosts} />
     </Container>
