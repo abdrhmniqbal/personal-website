@@ -21,7 +21,7 @@ const components = {
   h2: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (
     <h2
       className={cn(
-        'mt-10 scroll-m-20 border-b pb-1 text-3xl font-semibold tracking-tight first:mt-0',
+        'mt-10 scroll-m-20 pb-1 text-3xl font-semibold tracking-tight first:mt-0',
         className,
       )}
       {...props}
@@ -111,10 +111,7 @@ const components = {
     </div>
   ),
   tr: ({ className, ...props }: React.HTMLAttributes<HTMLTableRowElement>) => (
-    <tr
-      className={cn('m-0 border-t p-0 even:bg-muted', className)}
-      {...props}
-    />
+    <tr className={cn('m-0 border-t p-0', className)} {...props} />
   ),
   th: ({
     className,

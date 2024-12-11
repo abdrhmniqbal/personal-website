@@ -41,7 +41,7 @@ export default defineConfig({
       [
         rehypePrettyCode,
         {
-          theme: 'github-dark',
+          theme: 'kanagawa-dragon',
         },
       ],
       [

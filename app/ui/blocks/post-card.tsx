@@ -17,15 +17,15 @@ export default function PostCard({ post }: PostCardProps) {
   return (
     <TouchTarget key={post.slugAsParams}>
       <Card
-        className="hover:bg-primary/5 group w-full group-hover:cursor-pointer"
+        className="group w-full hover:bg-primary/5 group-hover:cursor-pointer"
         onClick={() => navigate(`/post/${post.slugAsParams}`)}
       >
         <Card.Header className="pb-2">
-          <Card.Title className="flex items-center justify-between">
+          <Card.Title className="line-clamp-2 flex items-center justify-between leading-8 tracking-tight group-hover:underline">
             {post.title}
             <ArrowRight02Icon
               strokeWidth={2}
-              className="size-6 translate-x-[-10px] opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+              className="hidden aspect-square min-h-6 min-w-6 translate-x-[-10px] opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 md:block"
             />
           </Card.Title>
           <Card.Description>{formatDate(post.createdAt)}</Card.Description>

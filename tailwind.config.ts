@@ -87,6 +87,5 @@ export default withTV({
   plugins: [
     require('tailwindcss-animate'),
     require('tailwindcss-react-aria-components'),
-    require('@tailwindcss/typography'),
   ],
 }) satisfies Config

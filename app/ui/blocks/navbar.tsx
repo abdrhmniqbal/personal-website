@@ -1,3 +1,4 @@
+import { cn } from '@/lib/utils/css'
 import { buttonStyles } from '@/ui/components/button'
 import { NavLink } from 'react-router'
 
@@ -12,7 +13,9 @@ export default function Navbar() {
       <div className="flex items-center">
         {mainMenu.map(({ title, href }) => (
           <NavLink
-            className={buttonStyles({ appearance: 'link' })}
+            className={({ isActive }) =>
+              cn(buttonStyles({ appearance: 'link' }), isActive && 'font-semibold underline')
+            }
             to={href}
             key={title}
           >

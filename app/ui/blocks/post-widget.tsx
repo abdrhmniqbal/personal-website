@@ -15,7 +15,9 @@ export default function PostWidget({ posts }: PostWidgetProps) {
   return (
     <div className="flex min-h-screen w-full flex-col space-y-8 pb-[20vh]">
       <div className="flex flex-col space-y-2">
-        <h2 className="text-2xl font-bold">My Writings</h2>
+        <h2 className="text-2xl font-semibold leading-10 tracking-tight">
+          My Writings
+        </h2>
         <p>
           Along with coding I also like to write about technology. Here are some
           of my recent posts.

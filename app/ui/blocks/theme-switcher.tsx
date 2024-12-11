@@ -22,6 +22,7 @@ export function ThemeSwitcher() {
         <span className="sr-only">Toggle theme</span>
       </Menu.Trigger>
       <Menu.Content>
+        <Menu.Header>Switch Theme</Menu.Header>
         <Menu.Item onAction={() => setTheme(Theme.LIGHT)}>
           <Sun01Icon className="mr-2 size-4" strokeWidth={2} />
           <span>Light</span>

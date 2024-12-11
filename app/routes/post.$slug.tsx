@@ -1,7 +1,6 @@
 import { posts } from '@/contents/generated'
 import { buttonStyles } from '@/ui/components/button'
 import { ClientOnly } from '@/ui/components/client-only'
-import { Container } from '@/ui/components/container'
 import { Image } from '@/ui/components/image'
 import { Mdx } from '@/ui/components/mdx/component'
 import { ArrowLeft02Icon } from 'hugeicons-react'
@@ -40,7 +39,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { post } = loaderData
   return (
-    <Container className="py-6 lg:py-12">
+    <div className="pt-6 lg:py-12">
       <Link to="/blog" className={buttonStyles({ appearance: 'outline' })}>
         <ArrowLeft02Icon strokeWidth={2} />
         See all posts
@@ -59,11 +58,11 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             layout="constrained"
             width={post.cover.width}
             height={post.cover.height}
-            className="mb-8 mt-4 rounded-lg border-[1px] border-border"
+            className="my-8 rounded-lg border-[1px] border-border"
           />
         )}
       </div>
       <ClientOnly>{() => <Mdx code={post.body} />}</ClientOnly>
-    </Container>
+    </div>
   )
 }
