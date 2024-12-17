@@ -1,6 +1,6 @@
+import { type Context } from 'hono'
 import { getClientEnv, initEnv } from '@/env.server'
-import type { HonoApp } from '@/server/index'
-import type { Context } from 'hono'
+import { type HonoApp } from '@/server/index'
 
 export const getLoadContext = async (c: Context<HonoApp, any, {}>) => {
   // Setup the .env vars

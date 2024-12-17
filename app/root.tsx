@@ -1,12 +1,12 @@
 import '@/assets/styles/app.css'
 import '@/assets/styles/mdx.css'
 import '@/assets/styles/themes.css'
+import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
+import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from 'remix-themes'
 import { useNonce } from '@/lib/hooks/use-nonce'
 import { themeSessionResolver } from '@/sessions.server'
 import MainLayout from '@/ui/layouts/main'
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
-import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from 'remix-themes'
-import type { Route } from './+types/root'
+import { type Route } from './+types/root'
 
 export function meta({ data }: Route.MetaArgs) {
   return [
@@ -55,7 +55,10 @@ export function AppLayout({
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <Meta />
-        <PreventFlashOnWrongTheme ssrTheme={Boolean(loaderData.theme)} nonce={nonce} />
+        <PreventFlashOnWrongTheme
+          ssrTheme={Boolean(loaderData.theme)}
+          nonce={nonce}
+        />
         <Links />
       </head>
       <body>

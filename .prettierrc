@@ -17,22 +17,6 @@
   "tabWidth": 2,
   "trailingComma": "all",
   "useTabs": false,
-  "importOrder": [
-    "<BUILTIN_MODULES>",
-    "^(react/(.*)$)|^(react$)",
-    "^(next/(.*)$)|^(next$)",
-    "<THIRD_PARTY_MODULES>",
-    "^types$",
-    "^@/types/(.*)$",
-    "^@/config/(.*)$",
-    "^@/lib/(.*)$",
-    "^@/components/ui/(.*)$",
-    "^@/components/blocks/(.*)$",
-    "^@/components/(.*)$",
-    "^@/app/(.*)$",
-    "^[./]"
-  ],
-  "importOrderParserPlugins": ["typescript", "jsx", "decorators-legacy"],
   "overrides": [
     {
       "files": ["**/package.json"],
@@ -41,10 +25,7 @@
       }
     }
   ],
-  "plugins": [
-    "@ianvs/prettier-plugin-sort-imports",
-    "prettier-plugin-tailwindcss"
-  ],
+  "plugins": ["prettier-plugin-tailwindcss"],
   "tailwindAttributes": ["class", "className", "ngClass", ".*[cC]lassName"],
   "tailwindFunctions": ["clsx", "cn", "tv", "cr", "ctr"]
 }

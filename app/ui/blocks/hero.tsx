@@ -1,8 +1,8 @@
+import { Github01Icon, Mail01Icon, NewTwitterIcon } from 'hugeicons-react'
+import { Link } from 'react-router'
 import { TypewriterEffect } from '@/ui/blocks/typewriter-effect'
 import { buttonStyles } from '@/ui/components/button'
 import { Tooltip } from '@/ui/components/tooltip'
-import { Github01Icon, Mail01Icon, NewTwitterIcon } from 'hugeicons-react'
-import { Link } from 'react-router'
 
 const socialLinks = [
   {

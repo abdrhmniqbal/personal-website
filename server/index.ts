@@ -1,11 +1,11 @@
-import { getLoadContext } from '@/server/context'
 import { serveStatic } from '@hono/node-server/serve-static'
-import type { Context } from 'hono'
+import { type Context } from 'hono'
 import { contextStorage } from 'hono/context-storage'
 import { poweredBy } from 'hono/powered-by'
 import { NONCE, secureHeaders } from 'hono/secure-headers'
 import { trimTrailingSlash } from 'hono/trailing-slash'
 import { createHonoServer } from 'react-router-hono-server/cloudflare'
+import { getLoadContext } from '@/server/context'
 
 export type HonoApp = {
   Bindings: {

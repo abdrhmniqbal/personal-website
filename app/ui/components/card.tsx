@@ -8,7 +8,7 @@ const Base = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      'bg-background text-foreground rounded-lg border shadow-sm',
+      'rounded-lg border bg-background text-foreground shadow-sm',
       className,
     )}
     {...props}
@@ -45,7 +45,7 @@ const Description = ({
   className,
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('text-muted-foreground text-sm', className)} {...props} />
+  <div className={cn('text-sm text-muted-foreground', className)} {...props} />
 )
 Description.displayName = 'CardDescription'
 

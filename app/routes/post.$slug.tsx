@@ -1,12 +1,12 @@
+import { ArrowLeft02Icon } from 'hugeicons-react'
+import { Link } from 'react-router'
 import { posts } from '@/contents/generated'
+import { formatDate } from '@/lib/utils/date'
 import { buttonStyles } from '@/ui/components/button'
 import { ClientOnly } from '@/ui/components/client-only'
 import { Image } from '@/ui/components/image'
 import { Mdx } from '@/ui/components/mdx/component'
-import { ArrowLeft02Icon } from 'hugeicons-react'
-import { Link } from 'react-router'
-import { formatDate } from '@/lib/utils/date'
-import type { Route } from './+types/post.$slug'
+import { type Route } from './+types/post.$slug'
 
 async function getPageFromParams(params: string) {
   const post = posts.find((post) => post.slugAsParams === params)

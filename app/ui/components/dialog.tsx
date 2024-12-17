@@ -1,23 +1,21 @@
-import React from 'react'
-import {
-  Button as DialogClosePrimitive,
-  type ButtonProps as DialogCloseProps,
-} from '@/ui/components/button'
 import { Cancel01Icon } from 'hugeicons-react'
-import type {
-  DialogProps,
-  HeadingProps as DialogTitlePrimitiveProps,
-  ButtonProps as DialogTriggerProps,
-} from 'react-aria-components'
+import React from 'react'
 import {
   Button as DialogCloseIndicatorPrimitive,
   Dialog as DialogPrimitive,
   Heading as DialogTitlePrimitive,
   Button as DialogTriggerPrimitive,
   OverlayTriggerStateContext,
+  type DialogProps,
+  type HeadingProps as DialogTitlePrimitiveProps,
+  type ButtonProps as DialogTriggerProps,
 } from 'react-aria-components'
 import { tv } from 'tailwind-variants'
 import { useMediaQuery } from '@/lib/hooks/use-media-query'
+import {
+  Button as DialogClosePrimitive,
+  type ButtonProps as DialogCloseProps,
+} from '@/ui/components/button'
 
 /** Styless Variants */
 export const dialogStyles = tv({
@@ -29,7 +27,7 @@ export const dialogHeaderStyles = tv({
 })
 
 export const dialogDescriptionStyles = tv({
-  base: 'text-muted-foreground mt-0.5 block text-sm sm:mt-1',
+  base: 'mt-0.5 block text-sm text-muted-foreground sm:mt-1',
 })
 
 export const dialogBodyStyles = tv({
@@ -41,11 +39,11 @@ export const dialogFooterStyles = tv({
 })
 
 export const closeIndicatorStyles = tv({
-  base: 'close focus:bg-secondary hover:bg-secondary absolute right-1 top-1 z-50 grid size-8 place-content-center rounded-xl sm:right-2 sm:top-2 sm:size-7 sm:rounded-md',
+  base: 'close absolute right-1 top-1 z-50 grid size-8 place-content-center rounded-xl hover:bg-secondary focus:bg-secondary sm:right-2 sm:top-2 sm:size-7 sm:rounded-md',
 })
 
 export const titleStyles = tv({
-  base: 'text-foreground flex flex-1 items-center',
+  base: 'flex flex-1 items-center text-foreground',
   variants: {
     level: {
       1: 'text-lg font-semibold sm:text-xl',

@@ -1,12 +1,12 @@
 import type * as React from 'react'
+import { useMDXComponent } from '@/lib/hooks/use-mdx-component'
+import { cn } from '@/lib/utils/css'
 import { Image } from '@/ui/components/image'
 import {
   CommandCopyButton,
   CopyButton,
   extractCode,
 } from '@/ui/components/mdx/copy-button'
-import { useMDXComponent } from '@/lib/hooks/use-mdx-component'
-import { cn } from '@/lib/utils/css'
 
 const components = {
   h1: ({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) => (

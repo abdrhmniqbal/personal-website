@@ -1,14 +1,5 @@
-import * as React from 'react'
 import { ArrowRight01Icon, RadioIcon, Tick02Icon } from 'hugeicons-react'
-import type {
-  ButtonProps,
-  MenuItemProps as MenuItemPrimitiveProps,
-  MenuProps as MenuPrimitiveProps,
-  MenuSectionProps,
-  MenuTriggerProps as MenuTriggerPrimitiveProps,
-  PopoverProps,
-  SeparatorProps,
-} from 'react-aria-components'
+import * as React from 'react'
 import {
   Button,
   Collection,
@@ -19,9 +10,15 @@ import {
   MenuTrigger as MenuTriggerPrimitive,
   Separator,
   SubmenuTrigger as SubmenuTriggerPrimitive,
+  type ButtonProps,
+  type MenuItemProps as MenuItemPrimitiveProps,
+  type MenuProps as MenuPrimitiveProps,
+  type MenuSectionProps,
+  type MenuTriggerProps as MenuTriggerPrimitiveProps,
+  type PopoverProps,
+  type SeparatorProps,
 } from 'react-aria-components'
-import type { VariantProps } from 'tailwind-variants'
-import { tv } from 'tailwind-variants'
+import { tv, type VariantProps } from 'tailwind-variants'
 import { cn, cr } from '@/lib/utils/css'
 import {
   dropdownHeaderStyles,

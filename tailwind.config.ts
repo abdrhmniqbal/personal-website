@@ -1,5 +1,5 @@
 import { withTV } from 'tailwind-variants/dist/transformer.js'
-import type { Config } from 'tailwindcss'
+import { type Config } from 'tailwindcss'
 
 export default withTV({
   darkMode: ['class'],

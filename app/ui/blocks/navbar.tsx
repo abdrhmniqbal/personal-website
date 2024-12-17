@@ -1,6 +1,6 @@
+import { NavLink } from 'react-router'
 import { cn } from '@/lib/utils/css'
 import { buttonStyles } from '@/ui/components/button'
-import { NavLink } from 'react-router'
 
 const mainMenu = [
   { title: 'Home', href: '/' },
@@ -14,7 +14,10 @@ export default function Navbar() {
         {mainMenu.map(({ title, href }) => (
           <NavLink
             className={({ isActive }) =>
-              cn(buttonStyles({ appearance: 'link' }), isActive && 'font-semibold underline')
+              cn(
+                buttonStyles({ appearance: 'link' }),
+                isActive && 'font-semibold underline',
+              )
             }
             to={href}
             key={title}

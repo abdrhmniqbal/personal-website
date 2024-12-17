@@ -1,8 +1,8 @@
-import { Card } from '@/ui/components/card'
-import { TouchTarget } from '@/ui/components/touch-target'
 import { ArrowRight02Icon } from 'hugeicons-react'
 import { useNavigate } from 'react-router'
 import { formatDate } from '@/lib/utils/date'
+import { Card } from '@/ui/components/card'
+import { TouchTarget } from '@/ui/components/touch-target'
 
 interface PostCardProps {
   post: {

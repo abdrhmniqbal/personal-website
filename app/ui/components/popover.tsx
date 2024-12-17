@@ -1,9 +1,4 @@
 import * as React from 'react'
-import type {
-  DialogTriggerProps,
-  ModalOverlayProps,
-  PopoverProps as PopoverPrimitiveProps,
-} from 'react-aria-components'
 import {
   DialogTrigger,
   Modal,
@@ -13,6 +8,9 @@ import {
   Popover as PopoverPrimitive,
   useSlottedContext,
   type DialogProps,
+  type DialogTriggerProps,
+  type ModalOverlayProps,
+  type PopoverProps as PopoverPrimitiveProps,
 } from 'react-aria-components'
 import { twJoin } from 'tailwind-merge'
 import { tv } from 'tailwind-variants'
@@ -66,7 +64,7 @@ const Body = ({
 
 const popoverContentStyles = tv({
   base: [
-    'bg-overlay text-overlay-foreground min-w-80 max-w-xs rounded-xl border bg-clip-padding p-4 shadow-sm [scrollbar-width:thin] sm:max-w-3xl lg:text-sm dark:backdrop-blur-2xl dark:backdrop-saturate-200 [&::-webkit-scrollbar]:size-0.5',
+    'min-w-80 max-w-xs rounded-xl border bg-overlay bg-clip-padding p-4 text-overlay-foreground shadow-sm [scrollbar-width:thin] dark:backdrop-blur-2xl dark:backdrop-saturate-200 sm:max-w-3xl lg:text-sm [&::-webkit-scrollbar]:size-0.5',
   ],
   variants: {
     isMenu: {
@@ -76,18 +74,18 @@ const popoverContentStyles = tv({
     },
     isEntering: {
       true: [
-        'duration-50 animate-in fade-in placement-left:slide-in-from-right-1 placement-right:slide-in-from-left-1 placement-top:slide-in-from-bottom-1 placement-bottom:slide-in-from-top-1 ease-out',
+        'duration-50 ease-out animate-in fade-in placement-left:slide-in-from-right-1 placement-right:slide-in-from-left-1 placement-top:slide-in-from-bottom-1 placement-bottom:slide-in-from-top-1',
       ],
     },
     isExiting: {
-      true: 'duration-50 animate-out fade-out placement-left:slide-out-to-right-1 placement-right:slide-out-to-left-1 placement-top:slide-out-to-bottom-1 placement-bottom:slide-out-to-top-1 ease-in',
+      true: 'duration-50 ease-in animate-out fade-out placement-left:slide-out-to-right-1 placement-right:slide-out-to-left-1 placement-top:slide-out-to-bottom-1 placement-bottom:slide-out-to-top-1',
     },
   },
 })
 
 const drawerStyles = tv({
   base: [
-    'bg-overlay fixed bottom-0 top-auto z-50 max-h-full w-full max-w-2xl border border-b-transparent outline-none',
+    'fixed bottom-0 top-auto z-50 max-h-full w-full max-w-2xl border border-b-transparent bg-overlay outline-none',
   ],
   variants: {
     isMenu: {
@@ -97,13 +95,13 @@ const drawerStyles = tv({
     isEntering: {
       true: [
         '[transition:transform_0.5s_cubic-bezier(0.32,_0.72,_0,_1)] [will-change:transform]',
-        'animate-in fade-in-0 slide-in-from-bottom-56 duration-200',
+        'duration-200 animate-in fade-in-0 slide-in-from-bottom-56',
         '[transition:translate3d(0,_100%,_0)]',
         'sm:slide-in-from-bottom-auto sm:slide-in-from-top-[20%]',
       ],
     },
     isExiting: {
-      true: 'animate-out slide-out-to-bottom-56 duration-200 ease-in',
+      true: 'duration-200 ease-in animate-out slide-out-to-bottom-56',
     },
   },
 })
@@ -138,7 +136,7 @@ const Content = ({
   return isMobile && respectScreen ? (
     <ModalOverlay
       className={twJoin(
-        'bg-overlay/10 fixed left-0 top-0 isolate z-50 h-[--visual-viewport-height] w-full [--visual-viewport-vertical-padding:16px]',
+        'fixed left-0 top-0 isolate z-50 h-[--visual-viewport-height] w-full bg-overlay/10 [--visual-viewport-vertical-padding:16px]',
         isSubmenuTrigger ? 'bg-overlay/10' : '',
       )}
       {...props}
@@ -174,7 +172,7 @@ const Content = ({
             width={12}
             height={12}
             viewBox="0 0 12 12"
-            className="group-placement-left:-rotate-90 group-placement-right:rotate-90 group-placement-bottom:rotate-180 stroke-border fill-overlay block"
+            className="block fill-overlay stroke-border group-placement-left:-rotate-90 group-placement-right:rotate-90 group-placement-bottom:rotate-180"
           >
             <path d="M0 0 L6 6 L12 0" />
           </svg>

@@ -1,10 +1,9 @@
+import { Task01Icon, TaskDone01Icon } from 'hugeicons-react'
 import * as React from 'react'
-import type { ButtonProps } from '@/ui/components/button'
-import { Button, buttonStyles } from '@/ui/components/button'
+import { cn } from '@/lib/utils/css'
+import { Button, buttonStyles, type ButtonProps } from '@/ui/components/button'
 import { dropdownItemStyles } from '@/ui/components/dropdown'
 import { Menu } from '@/ui/components/menu'
-import { Task01Icon, TaskDone01Icon } from 'hugeicons-react'
-import { cn } from '@/lib/utils/css'
 
 export function extractCode(children: React.ReactNode): string {
   let code = ''
@@ -40,7 +39,7 @@ export function CopyButton({ value, ...props }: CopyButtonProps) {
     <Button
       layoutMode="icon"
       appearance="plain"
-      className="text-background hover:text-background/60 dark:hover:text-foreground/60 dark:text-foreground absolute right-0 top-0 z-10 mr-2 mt-3 size-8 p-2 hover:bg-transparent [&_svg]:size-4"
+      className="absolute right-0 top-0 z-10 mr-2 mt-3 size-8 p-2 text-background hover:bg-transparent hover:text-background/60 dark:text-foreground dark:hover:text-foreground/60 [&_svg]:size-4"
       onPress={() => {
         copyToClipboardWithMeta(value)
         setHasCopied(true)
@@ -109,7 +108,7 @@ export function CommandCopyButton({ value }: CopyButtonProps) {
       <Menu.Trigger
         className={cn(
           buttonStyles({ appearance: 'plain', layoutMode: 'icon' }),
-          'text-background hover:text-background/60 dark:text-foreground dark:hover:text-foreground/60 absolute right-0 top-0 z-10 mr-2 mt-3 size-8 p-2 hover:bg-transparent [&_svg]:size-4',
+          'absolute right-0 top-0 z-10 mr-2 mt-3 size-8 p-2 text-background hover:bg-transparent hover:text-background/60 dark:text-foreground dark:hover:text-foreground/60 [&_svg]:size-4',
         )}
       >
         {hasCopied ? (

@@ -1,6 +1,6 @@
 import * as React from 'react'
-import { ThemeSwitcher } from '@/ui/blocks/theme-switcher'
 import { cn } from '@/lib/utils/css'
+import { ThemeSwitcher } from '@/ui/blocks/theme-switcher'
 
 export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
   return (

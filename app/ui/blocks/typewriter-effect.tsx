@@ -1,5 +1,5 @@
-import { useEffect } from 'react'
 import { motion, stagger, useAnimate, useInView } from 'framer-motion'
+import { useEffect } from 'react'
 import { cn } from '@/lib/utils/css'
 
 export const TypewriterEffect = ({
@@ -40,7 +40,7 @@ export const TypewriterEffect = ({
         },
       )
     }
-  }, [isInView])
+  }, [isInView, animate])
 
   const renderWords = () => {
     return (

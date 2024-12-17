@@ -13,8 +13,8 @@
     "typecheck": "react-router typegen && tsc",
     "format:write": "prettier --write \"**/*.{ts,tsx,mdx,md,js,jsx,json,css}\" --cache",
     "format:check": "prettier --check \"**/*.{ts,tsx,mdx,md,js,jsx,json,css}\" --cache",
-    "lint": "eslint .",
-    "lint:fix": "eslint . --fix"
+    "lint": "eslint ./app ./server --cache",
+    "lint:fix": "eslint ./app ./server --fix"
   },
   "dependencies": {
     "@forge42/seo-tools": "^1.3.0",
@@ -39,15 +39,21 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
-    "@epic-web/config": "^1.16.4",
     "@hono/node-server": "^1.13.7",
     "@ianvs/prettier-plugin-sort-imports": "^4.4.0",
     "@react-router/dev": "^7.0.2",
     "@react-router/remix-routes-option-adapter": "^7.0.2",
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
+    "@vitest/eslint-plugin": "^1.1.17",
     "autoprefixer": "^10.4.20",
     "eslint": "^9.16.0",
+    "eslint-plugin-import-x": "^4.5.1",
+    "eslint-plugin-jest-dom": "^5.5.0",
+    "eslint-plugin-react": "^7.37.2",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "eslint-plugin-testing-library": "^7.1.1",
+    "globals": "^15.13.0",
     "miniflare": "^3.20241106.1",
     "postcss": "^8.4.49",
     "prettier": "^3.4.2",
@@ -59,6 +65,7 @@
     "remix-flat-routes": "^0.6.5",
     "tailwindcss": "^3.4.16",
     "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
     "velite": "^0.2.1",
     "vite": "^5.4.11",
     "vite-tsconfig-paths": "^4.3.2",

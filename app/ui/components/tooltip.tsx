@@ -6,8 +6,7 @@ import {
   TooltipTrigger,
   type TooltipProps as TooltipPrimitiveProps,
 } from 'react-aria-components'
-import type { VariantProps } from 'tailwind-variants'
-import { tv } from 'tailwind-variants'
+import { tv, type VariantProps } from 'tailwind-variants'
 import { cr } from '@/lib/utils/css'
 
 const tooltipStyles = tv({
@@ -69,7 +68,7 @@ const Content = ({
             width={12}
             height={12}
             viewBox="0 0 12 12"
-            className="group-placement-left:-rotate-90 group-placement-right:rotate-90 group-placement-bottom:rotate-180 arx forced-colors:fill-[Canvas] forced-colors:stroke-[ButtonBorder]"
+            className="arx group-placement-left:-rotate-90 group-placement-right:rotate-90 group-placement-bottom:rotate-180 forced-colors:fill-[Canvas] forced-colors:stroke-[ButtonBorder]"
           >
             <path d="M0 0 L6 6 L12 0" />
           </svg>

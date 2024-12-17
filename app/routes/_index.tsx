@@ -1,7 +1,7 @@
 import { posts } from '@/contents/generated'
 import Hero from '@/ui/blocks/hero'
 import PostWidget from '@/ui/blocks/post-widget'
-import type { Route } from './+types/_index'
+import { type Route } from './+types/_index'
 
 export async function loader() {
   const latestPosts = posts

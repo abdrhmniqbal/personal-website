@@ -1,10 +1,10 @@
-import { TouchTarget } from '@/ui/components/touch-target'
 import {
   Button as ButtonPrimitive,
   type ButtonProps as ButtonPrimitiveProps,
 } from 'react-aria-components'
 import { tv } from 'tailwind-variants'
 import { cr, focusButtonStyles } from '@/lib/utils/css'
+import { TouchTarget } from '@/ui/components/touch-target'
 
 /** Styles Variants */
 export const buttonStyles = tv(
@@ -53,37 +53,37 @@ export const buttonStyles = tv(
         appearance: 'solid',
         intent: 'primary',
         className:
-          'bg-primary text-primary-foreground pressed:bg-primary/80 hover:bg-primary/90',
+          'bg-primary text-primary-foreground hover:bg-primary/90 pressed:bg-primary/80',
       },
       {
         appearance: 'solid',
         intent: 'secondary',
         className:
-          'bg-secondary text-secondary-foreground pressed:bg-secondary/80 hover:bg-secondary/80',
+          'bg-secondary text-secondary-foreground hover:bg-secondary/80 pressed:bg-secondary/80',
       },
       {
         appearance: 'solid',
         intent: 'destructive',
         className:
-          'bg-destructive text-destructive-foreground pressed:bg-destructive/80 hover:bg-destructive/90',
+          'bg-destructive text-destructive-foreground hover:bg-destructive/90 pressed:bg-destructive/80',
       },
       {
         appearance: 'outline',
         intent: 'primary',
         className:
-          'border-border hover:bg-primary/15 pressed:bg-primary/5 text-primary border',
+          'border border-border text-primary hover:bg-primary/15 pressed:bg-primary/5',
       },
       {
         appearance: 'outline',
         intent: 'secondary',
         className:
-          'border-secondary-foreground hover:bg-secondary/60 pressed:bg-secondary/40 text-secondary-foreground border',
+          'border border-secondary-foreground text-secondary-foreground hover:bg-secondary/60 pressed:bg-secondary/40',
       },
       {
         appearance: 'outline',
         intent: 'destructive',
         className:
-          'border-destructive hover:bg-destructive/15 pressed:bg-destructive/5 text-destructive border',
+          'border border-destructive text-destructive hover:bg-destructive/15 pressed:bg-destructive/5',
       },
       {
         appearance: 'plain',

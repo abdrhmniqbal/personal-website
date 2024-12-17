@@ -1,6 +1,6 @@
 import { posts } from '@/contents/generated'
 import PostCard from '@/ui/blocks/post-card'
-import type { Route } from './+types/blog'
+import { type Route } from './+types/blog'
 
 export function meta({ data }: Route.MetaArgs) {
   return [

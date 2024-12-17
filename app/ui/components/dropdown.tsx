@@ -15,11 +15,11 @@ import { cn, cr } from '@/lib/utils/css'
 /** Styles Variants */
 export const dropdownItemStyles = tv({
   base: [
-    'text-foreground group relative flex cursor-default select-none items-center gap-x-1.5 rounded-[calc(var(--radius)-1px)] px-2.5 py-2 text-base outline outline-0 lg:text-sm',
+    'group relative flex cursor-default select-none items-center gap-x-1.5 rounded-[calc(var(--radius)-1px)] px-2.5 py-2 text-base text-foreground outline outline-0 lg:text-sm',
     'has-submenu:open:data-[danger=true]:bg-destructive/20 has-submenu:open:data-[danger=true]:text-destructive',
     'has-submenu:open:bg-accent has-submenu:open:text-accent-foreground [&[data-has-submenu][data-open]_[data-slot=icon]]:text-accent-foreground',
     '[&_[data-slot=avatar]]:-mr-0.5 [&_[data-slot=avatar]]:size-6 sm:[&_[data-slot=avatar]]:size-5',
-    '[&_[data-slot=icon]]:text-muted-foreground [&[data-hovered]_[data-slot=icon]]:text-accent-foreground [&[data-focused]_[data-slot=icon]]:text-accent-foreground [&[data-danger]_[data-slot=icon]]:text-destructive/60 [&[data-focused][data-danger]_[data-slot=icon]]:text-destructive-foreground [&_[data-slot=icon]]:size-4 [&_[data-slot=icon]]:shrink-0',
+    '[&[data-danger]_[data-slot=icon]]:text-destructive/60 [&[data-focused][data-danger]_[data-slot=icon]]:text-destructive-foreground [&[data-focused]_[data-slot=icon]]:text-accent-foreground [&[data-hovered]_[data-slot=icon]]:text-accent-foreground [&_[data-slot=icon]]:size-4 [&_[data-slot=icon]]:shrink-0 [&_[data-slot=icon]]:text-muted-foreground',
     '[&_[data-slot=menu-radio]>[data-slot=icon]]:size-3',
   ],
   variants: {
@@ -31,7 +31,7 @@ export const dropdownItemStyles = tv({
       true: [
         'bg-accent text-accent-foreground',
         'data-[danger=true]:bg-destructive data-[danger=true]:text-destructive-foreground',
-        '[&_.text-muted-foreground]:text-accent-foreground/80 [&[data-slot=label]]:text-accent-foreground [&[data-slot=description]]:text-accent-foreground',
+        '[&[data-slot=description]]:text-accent-foreground [&[data-slot=label]]:text-accent-foreground [&_.text-muted-foreground]:text-accent-foreground/80',
       ],
     },
   },
@@ -49,7 +49,7 @@ export const dropdownSectionStyles = tv({
 })
 
 export const dropdownHeaderStyles = tv({
-  base: 'text-muted-foreground bg-tertiary supports-[-moz-appearance:none]:bg-tertiary sticky -top-[5px] z-10 -mx-1 -mb-0.5 -mt-px min-w-[--trigger-width] truncate border-y px-4 py-2 text-sm font-medium backdrop-blur [&+*]:mt-1',
+  base: 'sticky -top-[5px] z-10 -mx-1 -mb-0.5 -mt-px min-w-[--trigger-width] truncate border-y bg-tertiary px-4 py-2 text-sm font-medium text-muted-foreground backdrop-blur supports-[-moz-appearance:none]:bg-tertiary [&+*]:mt-1',
 })
 
 /** Dropdown Section Components */
@@ -90,7 +90,7 @@ const DropdownItem = ({ className, ...props }: DropdownItemProps) => {
     >
       {cr(props.children, (children, { isSelected }) => (
         <>
-          <span className="group-selected:font-medium flex flex-1 items-center gap-2 truncate font-normal">
+          <span className="flex flex-1 items-center gap-2 truncate font-normal group-selected:font-medium">
             {children}
           </span>
 
@@ -139,7 +139,7 @@ const DropdownItemDetails = ({
         <Text
           slot={slot ?? 'description'}
           className={cn(
-            'text-muted-foreground text-xs',
+            'text-xs text-muted-foreground',
             classNames?.description,
           )}
           {...restProps}

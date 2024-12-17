@@ -1,7 +1,10 @@
 import { isbot } from 'isbot'
 import { renderToReadableStream } from 'react-dom/server'
-import type { AppLoadContext, EntryContext } from 'react-router'
-import { ServerRouter } from 'react-router'
+import {
+  ServerRouter,
+  type AppLoadContext,
+  type EntryContext,
+} from 'react-router'
 import { NonceProvider } from '@/lib/hooks/use-nonce'
 
 const ABORT_DELAY = 5_000

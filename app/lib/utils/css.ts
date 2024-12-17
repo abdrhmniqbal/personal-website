@@ -59,7 +59,7 @@ export function cn(...classes: ClassValue[]): string {
  * Default styles for focus states.
  */
 export const focusButtonStyles = tv({
-  base: 'ring-ring ring-offset-background outline-none',
+  base: 'outline-none ring-ring ring-offset-background',
   variants: {
     isFocusVisible: {
       false: 'ring-0',

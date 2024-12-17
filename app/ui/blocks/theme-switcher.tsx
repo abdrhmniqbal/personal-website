@@ -1,7 +1,7 @@
-import { buttonStyles } from '@/ui/components/button'
-import { Menu } from '@/ui/components/menu'
 import { Moon02Icon, Sun01Icon } from 'hugeicons-react'
 import { Theme, useTheme } from 'remix-themes'
+import { buttonStyles } from '@/ui/components/button'
+import { Menu } from '@/ui/components/menu'
 
 export function ThemeSwitcher() {
   const [, setTheme] = useTheme()

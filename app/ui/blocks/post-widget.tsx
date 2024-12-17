@@ -1,7 +1,7 @@
-import PostCard from '@/ui/blocks/post-card'
-import { buttonStyles } from '@/ui/components/button'
 import { ArrowRight01Icon } from 'hugeicons-react'
 import { Link } from 'react-router'
+import PostCard from '@/ui/blocks/post-card'
+import { buttonStyles } from '@/ui/components/button'
 
 interface PostWidgetProps {
   posts: {
