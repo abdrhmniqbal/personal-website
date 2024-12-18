@@ -296,4 +296,12 @@ export default [
         },
       }
     : null,
+  {
+    plugins: {
+      'react-compiler': (await import('eslint-plugin-react-compiler')).default,
+    },
+    rules: {
+      'react-compiler/react-compiler': 'error',
+    },
+  },
 ].filter(Boolean)
