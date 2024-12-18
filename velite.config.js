@@ -13,6 +13,7 @@ const posts = defineCollection({
       summary: s.string(),
       createdAt: s.isodate(),
       body: s.mdx(),
+      metadata: s.metadata(),
       cover: s
         .image({
           absoluteRoot: './public',

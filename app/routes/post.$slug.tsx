@@ -12,6 +12,7 @@ import { type Route } from './+types/post.$slug'
 
 export const handle: SitemapHandle<SitemapData> = {
   sitemap: async (domain) => {
+    const { posts } = await import('@/contents/generated')
     return posts.map((post) => ({
       route: `${domain}/post/${post.slugAsParams}`,
       priority: 1.0,
@@ -57,9 +58,11 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         See all posts
       </Link>
       <div className="mb-4 mt-6 flex flex-col">
-        <time className="text-sm text-muted-foreground">
-          Published on {formatDate(post.createdAt)}
-        </time>
+        <div className="space-x-2 text-sm text-muted-foreground">
+          <time>Published on {formatDate(post.createdAt)}</time>
+          <span>•</span>
+          <span>{post.metadata.readingTime} min read</span>
+        </div>
         <h1 className="mt-2 inline-block text-4xl font-semibold leading-tight lg:text-5xl">
           {post.title}
         </h1>
