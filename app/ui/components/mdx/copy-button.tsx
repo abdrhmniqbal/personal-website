@@ -1,81 +1,32 @@
 import { Task01Icon, TaskDone01Icon } from 'hugeicons-react'
-import * as React from 'react'
+import React, { useOptimistic, useTransition } from 'react'
 import { cn } from '@/lib/utils/css'
-import { Button, buttonStyles, type ButtonProps } from '@/ui/components/button'
-import { dropdownItemStyles } from '@/ui/components/dropdown'
+import { Button, buttonStyles } from '@/ui/components/button'
 import { Menu } from '@/ui/components/menu'
 
 export function extractCode(children: React.ReactNode): string {
-  let code = ''
-  React.Children.forEach(children, (child) => {
-    if (typeof child === 'string') {
-      code += child
-    } else if (React.isValidElement(child)) {
-      code += extractCode(child.props.children)
-    }
-  })
-  return code
-}
-
-interface CopyButtonProps extends ButtonProps {
-  value: string
-}
-
-async function copyToClipboardWithMeta(value: string) {
-  navigator.clipboard.writeText(value)
-}
-
-export function CopyButton({ value, ...props }: CopyButtonProps) {
-  const [hasCopied, setHasCopied] = React.useState(false)
-
-  React.useEffect(() => {
-    if (hasCopied) {
-      const timeout = setTimeout(() => setHasCopied(false), 2000)
-      return () => clearTimeout(timeout)
-    }
-  }, [hasCopied])
-
-  return (
-    <Button
-      layoutMode="icon"
-      appearance="plain"
-      className="absolute right-0 top-0 z-10 mr-2 mt-3 size-8 p-2 text-background hover:bg-transparent hover:text-background/60 dark:text-foreground dark:hover:text-foreground/60 [&_svg]:size-4"
-      onPress={() => {
-        copyToClipboardWithMeta(value)
-        setHasCopied(true)
-      }}
-      {...props}
-    >
-      <span className="sr-only">Copy</span>
-      {hasCopied ? (
-        <TaskDone01Icon strokeWidth={2} />
-      ) : (
-        <Task01Icon strokeWidth={2} />
-      )}
-    </Button>
-  )
+  if (typeof children === 'string') {
+    return children
+  }
+  if (React.isValidElement(children)) {
+    //@ts-expect-error - This is a hack to get the children of the element
+    return extractCode(children.props.children)
+  }
+  return React.Children.toArray(children).map(extractCode).join('')
 }
 
 type PackageManager = 'pnpm' | 'yarn' | 'bun'
 
-type CommandMapping = {
-  [key: string]: {
-    pnpm: string
-    yarn: string
-    bun: string
-  }
-}
-
-const commandMappings: CommandMapping = {
+const commandMappings = {
   install: { pnpm: 'pnpm add', yarn: 'yarn add', bun: 'bun add' },
   run: { pnpm: 'pnpm run', yarn: 'yarn run', bun: 'bun' },
   npx: { pnpm: 'pnpm dlx', yarn: 'yarn dlx', bun: 'bunx' },
-}
+} as const
 
 function convertCommand(command: string, to: PackageManager): string {
   const [mainCommand, ...args] = command.split(' ')
   if (mainCommand === 'npm') {
-    const npmSubCommand = args[0]
+    const npmSubCommand = args[0] as keyof typeof commandMappings // Explicitly narrow the type
     if (npmSubCommand in commandMappings) {
       return `${commandMappings[npmSubCommand][to]} ${args.slice(1).join(' ')}`.trim()
     }
@@ -87,53 +38,64 @@ function convertCommand(command: string, to: PackageManager): string {
   return command
 }
 
-export function CommandCopyButton({ value }: CopyButtonProps) {
-  console.log(value)
-  const [hasCopied, setHasCopied] = React.useState(false)
+export function CopyButton({ value }: { value: string }) {
+  const isNpmCommand = value.startsWith('npm')
+  const [state, setState] = useOptimistic<'idle' | 'copied'>('idle')
+  const [, startTransition] = useTransition()
 
-  React.useEffect(() => {
-    if (hasCopied) {
-      const timeout = setTimeout(() => setHasCopied(false), 2000)
-      return () => clearTimeout(timeout)
-    }
-  }, [hasCopied])
+  const handleCopy = (command: string) => {
+    startTransition(async () => {
+      await navigator.clipboard.writeText(command)
+      setState('copied')
+      await new Promise((resolve) => setTimeout(resolve, 2000))
+      setState('idle')
+    })
+  }
 
-  const handleCopy = (value: string) => {
-    copyToClipboardWithMeta(value)
-    setHasCopied(true)
+  if (isNpmCommand) {
+    // If the command starts with "npm", render the Menu for conversion
+    return (
+      <Menu>
+        <Menu.Trigger
+          className={cn(
+            buttonStyles({ appearance: 'plain', layoutMode: 'icon' }),
+            'absolute right-0 top-0 z-10 mr-2 mt-3 size-8 p-2 text-background hover:bg-transparent hover:text-background/60 dark:text-foreground dark:hover:text-foreground/60 [&_svg]:size-4',
+          )}
+        >
+          {state === 'copied' ? (
+            <TaskDone01Icon className="size-3" strokeWidth={2} />
+          ) : (
+            <Task01Icon className="size-3" strokeWidth={2} />
+          )}
+        </Menu.Trigger>
+        <Menu.Content className="relative">
+          <Menu.Item onAction={() => handleCopy(value)}>npm</Menu.Item>
+          {(['yarn', 'pnpm', 'bun'] as PackageManager[]).map((pkg) => (
+            <Menu.Item
+              key={pkg}
+              onAction={() => handleCopy(convertCommand(value, pkg))}
+            >
+              {pkg}
+            </Menu.Item>
+          ))}
+        </Menu.Content>
+      </Menu>
+    )
   }
 
   return (
-    <Menu>
-      <Menu.Trigger
-        className={cn(
-          buttonStyles({ appearance: 'plain', layoutMode: 'icon' }),
-          'absolute right-0 top-0 z-10 mr-2 mt-3 size-8 p-2 text-background hover:bg-transparent hover:text-background/60 dark:text-foreground dark:hover:text-foreground/60 [&_svg]:size-4',
-        )}
-      >
-        {hasCopied ? (
-          <TaskDone01Icon className="size-3" strokeWidth={2} />
-        ) : (
-          <Task01Icon className="size-3" strokeWidth={2} />
-        )}
-      </Menu.Trigger>
-      <Menu.Content className="relative">
-        <Button
-          className={dropdownItemStyles()}
-          onPress={() => handleCopy(value)}
-        >
-          npm
-        </Button>
-        {(['yarn', 'pnpm', 'bun'] as PackageManager[]).map((pkg) => (
-          <Button
-            key={pkg}
-            className={dropdownItemStyles()}
-            onPress={() => handleCopy(convertCommand(value, pkg))}
-          >
-            {pkg}
-          </Button>
-        ))}
-      </Menu.Content>
-    </Menu>
+    <Button
+      layoutMode="icon"
+      appearance="plain"
+      className="absolute right-0 top-0 z-10 mr-2 mt-3 size-8 p-2 text-background hover:bg-transparent hover:text-background/60 dark:text-foreground dark:hover:text-foreground/60 [&_svg]:size-4"
+      onPress={() => handleCopy(value)}
+    >
+      <span className="sr-only">Copy</span>
+      {state === 'copied' ? (
+        <TaskDone01Icon strokeWidth={2} />
+      ) : (
+        <Task01Icon strokeWidth={2} />
+      )}
+    </Button>
   )
 }
