@@ -1,12 +1,24 @@
+import { type SitemapHandle } from '@forge42/seo-tools/remix/sitemap'
 import { ArrowLeft02Icon } from 'hugeicons-react'
 import { Link } from 'react-router'
 import { posts } from '@/contents/generated'
 import { formatDate } from '@/lib/utils/date'
+import { type SitemapData } from '@/routes/sitemap[.]xml'
 import { buttonStyles } from '@/ui/components/button'
 import { ClientOnly } from '@/ui/components/client-only'
 import { Image } from '@/ui/components/image'
 import { Mdx } from '@/ui/components/mdx/component'
 import { type Route } from './+types/post.$slug'
+
+export const handle: SitemapHandle<SitemapData> = {
+  sitemap: async (domain) => {
+    return posts.map((post) => ({
+      route: `${domain}/post/${post.slugAsParams}`,
+      priority: 1.0,
+      lastmodISO: post.createdAt,
+    }))
+  },
+}
 
 async function getPageFromParams(params: string) {
   const post = posts.find((post) => post.slugAsParams === params)
