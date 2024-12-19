@@ -1,18 +1,28 @@
 import '@/assets/styles/app.css'
 import '@/assets/styles/mdx.css'
 import '@/assets/styles/themes.css'
-import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
+import {
+  Link,
+  Links,
+  Meta,
+  Outlet,
+  Scripts,
+  ScrollRestoration,
+  isRouteErrorResponse,
+} from 'react-router'
 import { useNonce } from '@/lib/hooks/use-nonce'
 import { ClientHintCheck, getHints } from '@/lib/utils/client-hints'
+import { cn } from '@/lib/utils/css'
 import { createDomain } from '@/lib/utils/http'
 import { getTheme, type Theme } from '@/lib/utils/theme.server'
 import { useOptionalTheme } from '@/routes/action.set-theme'
+import { buttonStyles } from '@/ui/components/button'
 import MainLayout from '@/ui/layouts/main'
 import { type Route } from './+types/root'
 
 export function meta({ data }: Route.MetaArgs) {
   return [
-    { title: data.APP_NAME },
+    { title: data ? data.APP_NAME : 'Error | Iqbal Abdurrahman' },
     {
       name: 'description',
       content: `Web developer residing in Bandung, passionate about crafting
@@ -90,5 +100,111 @@ export default function App({ loaderData }: Route.ComponentProps) {
     <MainLayout userPreference={loaderData.requestInfo.userPrefs.theme}>
       <Outlet />
     </MainLayout>
+  )
+}
+
+export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
+  const getClientErrorDetails = (
+    status: number,
+  ): { text: string; message: string } => {
+    const clientErrorMessages: Record<
+      number,
+      { text: string; message: string }
+    > = {
+      400: {
+        text: 'Bad Request',
+        message: 'The server could not understand the request.',
+      },
+      401: {
+        text: 'Unauthorized',
+        message: 'You need to log in to access this page.',
+      },
+      403: {
+        text: 'Forbidden',
+        message: "You don't have permission to access this resource.",
+      },
+      404: {
+        text: 'Not Found',
+        message: "The page you're looking for doesn't exist.",
+      },
+      405: {
+        text: 'Method Not Allowed',
+        message: 'The method specified in the request is not allowed.',
+      },
+      408: {
+        text: 'Request Timeout',
+        message: 'The server timed out waiting for the request.',
+      },
+      429: {
+        text: 'Too Many Requests',
+        message: 'You have sent too many requests in a short period.',
+      },
+    }
+
+    return (
+      clientErrorMessages[status] || {
+        text: 'Client Error',
+        message: 'An unexpected client error occurred. Please try again later.',
+      }
+    )
+  }
+
+  // Function to render content based on the error type
+  const renderContent = () => {
+    if (isRouteErrorResponse(error)) {
+      const isClientError = error.status >= 400 && error.status < 500
+
+      if (isClientError) {
+        const { text, message } = getClientErrorDetails(error.status)
+
+        return (
+          <>
+            <h1 className="text-4xl font-semibold leading-10 tracking-tighter">
+              {error.status} - {text}
+            </h1>
+            <p className="text-sm text-muted-foreground">{message}</p>
+          </>
+        )
+      }
+
+      return (
+        <>
+          <h1 className="text-4xl font-semibold leading-10 tracking-tighter">
+            {error.status} - {error.statusText}
+          </h1>
+          <p className="text-sm text-muted-foreground">{error.data}</p>
+        </>
+      )
+    } else if (error instanceof Error) {
+      return (
+        <div>
+          <h1>Error</h1>
+          <p>{error.message}</p>
+          <p>The stack trace is:</p>
+          <pre>{error.stack}</pre>
+        </div>
+      )
+    } else {
+      return (
+        <>
+          <h1 className="text-4xl font-semibold">Unknown Error</h1>
+        </>
+      )
+    }
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col items-center justify-center gap-2">
+      {renderContent()}
+      <Link
+        to="/"
+        className={cn(
+          buttonStyles({ appearance: 'outline', size: 'sm' }),
+          'mt-2',
+        )}
+      >
+        Back to Homepage
+      </Link>
+    </div>
   )
 }

@@ -53,7 +53,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   const { post } = loaderData
   return (
     <div className="pt-6 lg:py-12">
-      <Link to="/blog" className={buttonStyles({ appearance: 'outline' })}>
+      <Link to="/posts" className={buttonStyles({ appearance: 'outline' })}>
         <ArrowLeft02Icon strokeWidth={2} />
         See all posts
       </Link>

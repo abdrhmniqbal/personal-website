@@ -28,7 +28,7 @@ export default function PostWidget({ posts }: PostWidgetProps) {
           <PostCard post={post} key={index} />
         ))}
       </div>
-      <Link to="/blog" className={buttonStyles()}>
+      <Link to="/posts" className={buttonStyles()}>
         View all posts
         <ArrowRight01Icon strokeWidth={2} />
       </Link>

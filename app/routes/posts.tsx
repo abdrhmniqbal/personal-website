@@ -1,10 +1,10 @@
-import { ArrowLeft02Icon } from 'hugeicons-react'
 import { useNavigate, Link } from 'react-router'
 import { posts } from '@/contents/generated'
+import { cn } from '@/lib/utils/css'
 import PostCard from '@/ui/blocks/post-card'
 import { buttonStyles } from '@/ui/components/button'
 import { Pagination } from '@/ui/components/pagination'
-import { type Route } from './+types/blog'
+import { type Route } from './+types/posts'
 
 export function meta({ data }: Route.MetaArgs) {
   const { APP_NAME, currentPage } = data
@@ -48,7 +48,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   const navigate = useNavigate()
 
   const navigateToPage = (page: number) => {
-    const path = page === 1 ? '/blog' : `/blog?page=${page}`
+    const path = page === 1 ? '/posts' : `/posts?page=${page}`
     void navigate(path, { replace: true })
   }
 
@@ -63,17 +63,22 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           <PostCard post={post} key={index} />
         ))
       ) : (
-        <div className="flex min-h-[300px] w-full items-center justify-center">
+        <div className="flex min-h-[300px] w-full flex-col items-center justify-center gap-2">
           <div className="text-center">
-            <h2 className="mb-4 text-3xl font-semibold leading-10 tracking-tighter">
+            <h2 className="text-4xl font-semibold leading-10 tracking-tighter">
               No result found
             </h2>
+            <p className="text-sm text-muted-foreground">
+              There are no posts to display.
+            </p>
             <Link
-              to="/blog"
-              className={buttonStyles({ size: 'sm', appearance: 'outline' })}
+              to="/posts"
+              className={cn(
+                buttonStyles({ appearance: 'outline', size: 'sm' }),
+                'mt-2',
+              )}
             >
-              <ArrowLeft02Icon strokeWidth={2} />
-              Back to Blog
+              Back to Posts
             </Link>
           </div>
         </div>
