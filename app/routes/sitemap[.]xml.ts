@@ -1,6 +1,6 @@
 import { generateRemixSitemap } from '@forge42/seo-tools/remix/sitemap'
-import { type Route } from './+types/sitemap[.]xml'
 import { createDomain } from '@/lib/utils/http'
+import { type Route } from './+types/sitemap[.]xml'
 
 export type SitemapData = {}
 

@@ -1,8 +1,13 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils/css'
-import { ThemeSwitcher } from '@/ui/blocks/theme-switcher'
+import { type Theme } from '@/lib/utils/theme.server'
+import { ThemeSwitch } from '@/routes/action.set-theme'
 
-export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
+interface FooterProps extends React.HTMLAttributes<HTMLElement> {
+  userPreference?: Theme | null
+}
+
+export function Footer({ className, userPreference }: FooterProps) {
   return (
     <footer className={cn(className)}>
       <div className="flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
@@ -29,7 +34,7 @@ export function Footer({ className }: React.HTMLAttributes<HTMLElement>) {
             .
           </p>
         </div>
-        <ThemeSwitcher />
+        <ThemeSwitch userPreference={userPreference} />
       </div>
     </footer>
   )

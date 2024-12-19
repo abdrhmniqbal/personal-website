@@ -2,9 +2,11 @@ import '@/assets/styles/app.css'
 import '@/assets/styles/mdx.css'
 import '@/assets/styles/themes.css'
 import { Links, Meta, Outlet, Scripts, ScrollRestoration } from 'react-router'
-import { PreventFlashOnWrongTheme, ThemeProvider, useTheme } from 'remix-themes'
 import { useNonce } from '@/lib/hooks/use-nonce'
-import { themeSessionResolver } from '@/sessions.server'
+import { ClientHintCheck, getHints } from '@/lib/utils/client-hints'
+import { createDomain } from '@/lib/utils/http'
+import { getTheme, type Theme } from '@/lib/utils/theme.server'
+import { useOptionalTheme } from '@/routes/action.set-theme'
 import MainLayout from '@/ui/layouts/main'
 import { type Route } from './+types/root'
 
@@ -33,32 +35,35 @@ export const links: Route.LinksFunction = () => [
 ]
 
 export async function loader({ context, request }: Route.LoaderArgs) {
-  const { getTheme } = await themeSessionResolver(request)
   return {
     APP_NAME: context.env.APP_NAME,
-    theme: getTheme(),
+    requestInfo: {
+      hints: getHints(request),
+      origin: createDomain(request),
+      path: new URL(request.url).pathname,
+      userPrefs: {
+        theme: getTheme(request),
+      },
+    },
   }
 }
 
-export function AppLayout({
+function Document({
   children,
-  loaderData,
+  nonce,
+  theme = 'dark',
 }: {
   children: React.ReactNode
-  loaderData: Route.ComponentProps['loaderData']
+  nonce: string
+  theme?: Theme
 }) {
-  const [theme] = useTheme()
-  const nonce = useNonce()
   return (
     <html lang="en" className={theme === 'dark' ? 'dark' : ''}>
       <head>
         <meta charSet="utf-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <ClientHintCheck nonce={nonce} />
         <Meta />
-        <PreventFlashOnWrongTheme
-          ssrTheme={Boolean(loaderData.theme)}
-          nonce={nonce}
-        />
         <Links />
       </head>
       <body>
@@ -70,15 +75,20 @@ export function AppLayout({
   )
 }
 
-export default function AppWithProvider({ loaderData }: Route.ComponentProps) {
-  const { theme } = loaderData
+export function Layout({ children }: { children: React.ReactNode }) {
+  const nonce = useNonce()
+  const theme = useOptionalTheme()
   return (
-    <ThemeProvider specifiedTheme={theme} themeAction="/action/set-theme">
-      <AppLayout loaderData={loaderData}>
-        <MainLayout>
-          <Outlet />
-        </MainLayout>
-      </AppLayout>
-    </ThemeProvider>
+    <Document nonce={nonce} theme={theme}>
+      {children}
+    </Document>
+  )
+}
+
+export default function App({ loaderData }: Route.ComponentProps) {
+  return (
+    <MainLayout userPreference={loaderData.requestInfo.userPrefs.theme}>
+      <Outlet />
+    </MainLayout>
   )
 }
