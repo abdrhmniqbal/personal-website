@@ -10,6 +10,9 @@ interface PostCardProps {
     title: string
     summary: string
     createdAt: string
+    metadata: {
+      readingTime: number
+    }
   }
 }
 export default function PostCard({ post }: PostCardProps) {
@@ -25,7 +28,11 @@ export default function PostCard({ post }: PostCardProps) {
                 className="hidden aspect-square min-h-6 min-w-6 translate-x-[-10px] opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100 md:block"
               />
             </Card.Title>
-            <Card.Description>{formatDate(post.createdAt)}</Card.Description>
+            <Card.Description className="flex items-center gap-1 text-sm text-muted-foreground">
+              <time>{formatDate(post.createdAt)}</time>
+              <span>•</span>
+              <span>{post.metadata.readingTime} min read</span>
+            </Card.Description>
           </Card.Header>
           <Card.Content>{post.summary}</Card.Content>
         </Card>

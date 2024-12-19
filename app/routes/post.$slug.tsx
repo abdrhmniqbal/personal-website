@@ -6,6 +6,7 @@ import { formatDate } from '@/lib/utils/date'
 import { type SitemapData } from '@/routes/sitemap[.]xml'
 import { buttonStyles } from '@/ui/components/button'
 import { ClientOnly } from '@/ui/components/client-only'
+import { Container } from '@/ui/components/container'
 import { Image } from '@/ui/components/image'
 import { Mdx } from '@/ui/components/mdx/component'
 import { type Route } from './+types/post.$slug'
@@ -52,7 +53,7 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { post } = loaderData
   return (
-    <div className="pt-6 lg:py-12">
+    <Container className="container max-w-3xl pt-6 lg:max-w-3xl lg:py-12 xl:max-w-4xl 2xl:max-w-4xl">
       <Link to="/posts" className={buttonStyles({ appearance: 'outline' })}>
         <ArrowLeft02Icon strokeWidth={2} />
         See all posts
@@ -78,6 +79,6 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         )}
       </div>
       <ClientOnly>{() => <Mdx code={post.body} />}</ClientOnly>
-    </div>
+    </Container>
   )
 }

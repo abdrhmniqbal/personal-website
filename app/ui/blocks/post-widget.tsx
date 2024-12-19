@@ -9,6 +9,9 @@ interface PostWidgetProps {
     title: string
     summary: string
     createdAt: string
+    metadata: {
+      readingTime: number
+    }
   }[]
 }
 export default function PostWidget({ posts }: PostWidgetProps) {
