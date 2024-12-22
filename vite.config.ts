@@ -15,7 +15,15 @@ export default defineConfig({
       include: ['./app/**/*'],
       filter: /\.[jt]sx?$/,
       babelConfig: {
-        presets: ['@babel/preset-typescript'],
+        presets: [
+          '@babel/preset-typescript',
+          [
+            '@babel/preset-react',
+            {
+              runtime: 'automatic',
+            },
+          ],
+        ],
         plugins: [['babel-plugin-react-compiler']],
       },
     }),
