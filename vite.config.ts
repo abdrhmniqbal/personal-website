@@ -1,10 +1,9 @@
 /// <reference types="vite/client" />
 import { reactRouter } from '@react-router/dev/vite'
 import { cloudflareDevProxy } from '@react-router/dev/vite/cloudflare'
-import autoprefixer from 'autoprefixer'
+import tailwindcss from '@tailwindcss/vite'
 import { reactRouterDevTools } from 'react-router-devtools'
 import { reactRouterHonoServer } from 'react-router-hono-server/dev'
-import tailwindcss from 'tailwindcss'
 import { defineConfig } from 'vite'
 import babel from 'vite-plugin-babel'
 import tsconfigPaths from 'vite-tsconfig-paths'
@@ -20,6 +19,7 @@ export default defineConfig({
       },
     }),
     cloudflareDevProxy(),
+    tailwindcss(),
     reactRouterHonoServer({
       runtime: 'cloudflare',
       serverEntryPoint: './server/index.ts',
@@ -28,9 +28,4 @@ export default defineConfig({
     reactRouter(),
     tsconfigPaths(),
   ],
-  css: {
-    postcss: {
-      plugins: [tailwindcss, autoprefixer],
-    },
-  },
 })
