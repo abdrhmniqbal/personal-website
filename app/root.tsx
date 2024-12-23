@@ -1,6 +1,8 @@
 import '@/assets/styles/app.css'
 import '@/assets/styles/mdx.css'
 import '@/assets/styles/themes.css'
+import { generateMeta } from '@forge42/seo-tools/remix/metadata'
+import { article } from '@forge42/seo-tools/structured-data/article'
 import {
   Link,
   Links,
@@ -15,20 +17,33 @@ import { ClientHintCheck, getHints } from '@/lib/utils/client-hints'
 import { cn } from '@/lib/utils/css'
 import { createDomain } from '@/lib/utils/http'
 import { getTheme, type Theme } from '@/lib/utils/theme.server'
-import { useOptionalTheme } from '@/routes/action.set-theme'
+import { useOptionalTheme } from '@/routes/resource.set-theme'
 import { buttonStyles } from '@/ui/components/button'
 import MainLayout from '@/ui/layouts/main'
 import { type Route } from './+types/root'
 
 export function meta({ data }: Route.MetaArgs) {
-  return [
-    { title: data ? data.APP_NAME : 'Error | Iqbal Abdurrahman' },
+  const meta = generateMeta(
     {
-      name: 'description',
-      content: `Web developer residing in Bandung, passionate about crafting
+      title: data ? data.APP_NAME : 'Error | Iqbal Abdurrahman',
+      description: `Web developer residing in Bandung, passionate about crafting
         intuitive, user-friendly, and performant web applications.`,
+      url: data ? `${data.requestInfo.origin}${data.requestInfo.path}` : '/',
     },
-  ]
+    [
+      {
+        'script:ld+json': article({
+          '@type': 'Article',
+          headline: data ? data.APP_NAME : 'Error | Iqbal Abdurrahman',
+          image: data
+            ? `${data.requestInfo.origin}/resource/og?title=${data.APP_NAME}`
+            : null,
+        }),
+      },
+    ],
+  )
+
+  return meta
 }
 
 export const links: Route.LinksFunction = () => [
@@ -162,7 +177,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
             <h1 className="text-4xl font-semibold leading-10 tracking-tighter">
               {error.status} - {text}
             </h1>
-            <p className="text-sm text-muted-foreground">{message}</p>
+            <p className="text-muted-foreground text-sm">{message}</p>
           </>
         )
       }
@@ -172,7 +187,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
           <h1 className="text-4xl font-semibold leading-10 tracking-tighter">
             {error.status} - {error.statusText}
           </h1>
-          <p className="text-sm text-muted-foreground">{error.data}</p>
+          <p className="text-muted-foreground text-sm">{error.data}</p>
         </>
       )
     } else if (error instanceof Error) {

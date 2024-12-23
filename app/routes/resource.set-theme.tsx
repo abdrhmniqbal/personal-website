@@ -9,7 +9,7 @@ import { useOptionalRequestInfo, useRequestInfo } from '@/lib/utils/request'
 import { type Theme, setTheme } from '@/lib/utils/theme.server'
 import { Menu } from '@/ui/components/menu'
 import { ServerOnly } from '@/ui/components/server-only'
-import { type Route } from './+types/action.set-theme'
+import { type Route } from './+types/resource.set-theme'
 
 const ThemeFormSchema = z.object({
   theme: z.enum(['system', 'light', 'dark']),
@@ -94,7 +94,7 @@ export function ThemeSwitch({
             onAction={() =>
               fetcher.submit(
                 { theme: 'light' },
-                { method: 'post', action: '/action/set-theme' },
+                { method: 'post', action: '/resource/set-theme' },
               )
             }
           >
@@ -108,7 +108,7 @@ export function ThemeSwitch({
             onAction={() =>
               fetcher.submit(
                 { theme: 'dark' },
-                { method: 'post', action: '/action/set-theme' },
+                { method: 'post', action: '/resource/set-theme' },
               )
             }
           >
@@ -122,7 +122,7 @@ export function ThemeSwitch({
             onAction={() =>
               fetcher.submit(
                 { theme: 'system' },
-                { method: 'post', action: '/action/set-theme' },
+                { method: 'post', action: '/resource/set-theme' },
               )
             }
           >

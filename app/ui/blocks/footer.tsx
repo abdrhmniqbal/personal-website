@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { cn } from '@/lib/utils/css'
 import { type Theme } from '@/lib/utils/theme.server'
-import { ThemeSwitch } from '@/routes/action.set-theme'
+import { ThemeSwitch } from '@/routes/resource.set-theme'
 
 interface FooterProps extends React.HTMLAttributes<HTMLElement> {
   userPreference?: Theme | null
