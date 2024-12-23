@@ -1,14 +1,40 @@
-import { Resvg } from '@resvg/resvg-js'
-import satori, { type SatoriOptions } from 'satori'
+import { Resvg, initWasm } from '@resvg/resvg-wasm'
+import RESVG_WASM from '@resvg/resvg-wasm/index_bg.wasm?url'
+import satori, { init as initSatori, type SatoriOptions } from 'satori/wasm'
+import initYoga from 'yoga-wasm-web'
+import YOGA_WASM from 'yoga-wasm-web/dist/yoga.wasm?url'
 import { OG_IMAGE_HEIGHT, OG_IMAGE_WIDTH } from '@/routes/resource.og'
 
-// Load the font from the "public" directory
 const fontSans = (baseUrl: string) =>
   fetch(new URL(`${baseUrl}/static/fonts/Inter-Bold.otf`)).then((res) =>
     res.arrayBuffer(),
   )
 
+const initialize = async () => {
+  const { default: resvgwasm } = await import(
+    /* @vite-ignore */ `${RESVG_WASM}?module`
+  )
+  const { default: yogawasm } = await import(
+    /* @vite-ignore */ `${YOGA_WASM}?module`
+  )
+  try {
+    const yoga = await initYoga(yogawasm)
+    await initSatori(yoga)
+    console.log('initialized yoga')
+  } catch (err) {
+    console.error(err)
+  }
+
+  // Init resvg wasm
+  try {
+    await initWasm(resvgwasm)
+    console.log('initialized resvg')
+  } catch (err) {
+    console.error(err)
+  }
+}
 export async function createOGImage(title: string, requestUrl: string) {
+  await initialize()
   const fontSansData = await fontSans(requestUrl)
   const options: SatoriOptions = {
     width: OG_IMAGE_WIDTH,
@@ -38,7 +64,6 @@ export async function createOGImage(title: string, requestUrl: string) {
         overflow: 'hidden',
       }}
     >
-      {/* Background Layer */}
       <div
         style={{
           backgroundImage: `url(${requestUrl}/static/images/grid.svg)`,
@@ -55,8 +80,6 @@ export async function createOGImage(title: string, requestUrl: string) {
           zIndex: -1,
         }}
       ></div>
-
-      {/* Foreground Content */}
       <div
         style={{
           position: 'relative',
@@ -70,7 +93,6 @@ export async function createOGImage(title: string, requestUrl: string) {
     options,
   )
 
-  // Convert the SVG to PNG with "resvg"
   const resvg = new Resvg(svg)
   const pngData = resvg.render()
   return pngData.asPng()
