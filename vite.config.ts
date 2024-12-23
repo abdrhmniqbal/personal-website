@@ -7,10 +7,12 @@ import { reactRouterHonoServer } from 'react-router-hono-server/dev'
 import tailwindcss from 'tailwindcss'
 import { defineConfig } from 'vite'
 import babel from 'vite-plugin-babel'
+import wasmModuleWorkers from 'vite-plugin-wasm-module-workers'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
 export default defineConfig({
   plugins: [
+    wasmModuleWorkers(),
     babel({
       include: ['./app/**/*'],
       filter: /\.[jt]sx?$/,
