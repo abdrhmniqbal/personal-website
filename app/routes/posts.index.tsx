@@ -1,9 +1,12 @@
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
+import { useDebounce } from 'use-debounce'
 import { posts } from '@/contents/generated'
 import NoResult from '@/ui/blocks/no-result'
 import PostCard from '@/ui/blocks/post-card'
 import { Heading } from '@/ui/components/heading'
 import { Pagination } from '@/ui/components/pagination'
+import { SearchField } from '@/ui/components/search-field'
 import { type Route } from './+types/posts.index'
 
 export function meta({ data }: Route.MetaArgs) {
@@ -21,11 +24,20 @@ export function meta({ data }: Route.MetaArgs) {
 export async function loader({ context, request }: Route.LoaderArgs) {
   const url = new URL(request.url)
   const page = parseInt(url.searchParams.get('page') || '1', 10)
+  const query = url.searchParams.get('q')?.toLowerCase().trim() || ''
   const postsPerPage = 5
 
-  const latestPosts = posts.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  )
+  const latestPosts = posts
+    .filter(
+      (post) =>
+        post.title.toLowerCase().includes(query) ||
+        post.summary.toLowerCase().includes(query) ||
+        post.tags?.some((tag) => tag.toLowerCase().includes(query)),
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )
 
   const totalPosts = latestPosts.length
   const totalPages = Math.ceil(totalPosts / postsPerPage)
@@ -39,18 +51,28 @@ export async function loader({ context, request }: Route.LoaderArgs) {
     paginatedPosts,
     totalPages,
     currentPage: page,
+    query,
     APP_NAME: context.env.APP_NAME,
   }
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { paginatedPosts, totalPages, currentPage } = loaderData
+  const { paginatedPosts, totalPages, currentPage, query } = loaderData
+  const [searchValue, setSearchValue] = useState(query || '')
+  const [debouncedSearch] = useDebounce(searchValue, 100)
   const navigate = useNavigate()
 
   const navigateToPage = (page: number) => {
     const path = page === 1 ? '/posts' : `/posts?page=${page}`
     void navigate(path, { replace: true })
   }
+
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (debouncedSearch) params.set('q', debouncedSearch)
+    params.set('page', '1')
+    void navigate(`/posts?${params.toString()}`, { replace: true })
+  }, [debouncedSearch, navigate])
 
   return (
     <div className="flex flex-col items-start justify-center space-y-8 pb-[20vh]">
@@ -59,6 +81,12 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           Latest Posts
         </Heading>
       </div>
+      <SearchField
+        aria-label="Search"
+        placeholder="Search posts..."
+        value={searchValue}
+        onChange={setSearchValue}
+      />
       {paginatedPosts.length > 0 ? (
         <div className="flex w-full flex-col space-y-4">
           {paginatedPosts.map((post, index) => (
