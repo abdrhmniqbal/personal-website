@@ -1,5 +1,6 @@
 import { Task01Icon, TaskDone01Icon } from 'hugeicons-react'
 import React, { useOptimistic, useTransition } from 'react'
+import { toast } from 'sonner'
 import { cn } from '@/lib/utils/css'
 import { Button, buttonStyles } from '@/ui/components/button'
 import { Menu } from '@/ui/components/menu'
@@ -48,6 +49,7 @@ export function CopyButton({ value }: { value: string }) {
       await navigator.clipboard.writeText(command)
       setState('copied')
       await new Promise((resolve) => setTimeout(resolve, 2000))
+      toast('Text has been copied to clipboard.')
       setState('idle')
     })
   }

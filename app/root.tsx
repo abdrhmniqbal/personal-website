@@ -19,6 +19,7 @@ import { createDomain } from '@/lib/utils/http'
 import { getTheme, type Theme } from '@/lib/utils/theme.server'
 import { useOptionalTheme } from '@/routes/resource.set-theme'
 import { buttonStyles } from '@/ui/components/button'
+import { Toast } from '@/ui/components/toast'
 import MainLayout from '@/ui/layouts/main'
 import { type Route } from './+types/root'
 
@@ -106,6 +107,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Document nonce={nonce} theme={theme}>
       {children}
+			<Toast />
     </Document>
   )
 }
