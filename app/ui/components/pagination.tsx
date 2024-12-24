@@ -1,3 +1,5 @@
+'use client'
+
 import {
   ArrowLeft01Icon,
   ArrowLeftDoubleIcon,
@@ -6,12 +8,12 @@ import {
   MoreHorizontalIcon,
 } from 'hugeicons-react'
 import {
-  ListBox,
-  ListBoxItem,
   type ListBoxItemProps,
   type ListBoxProps,
+  type ListBoxSectionProps,
+  ListBox,
+  ListBoxItem,
   ListBoxSection,
-  type SectionProps,
   Separator,
   composeRenderProps,
 } from 'react-aria-components'
@@ -25,16 +27,16 @@ const paginationStyles = tv({
     section: 'flex h-9 gap-[5px]',
     list: 'flex flex-row items-center gap-[5px]',
     itemButton:
-      'data-data-focus-visible:border-primary data-data-focus-visible:bg-primary/10 data-data-focus-visible:ring-4 data-data-focus-visible:ring-primary/20 cursor-pointer font-normal text-foreground',
+      'data-focus-visible:border-primary text-fg data-focus-visible:bg-primary/10 data-focus-visible:ring-primary/20 cursor-pointer font-normal data-focus-visible:ring-4',
     itemLabel: 'grid h-9 place-content-center px-3.5 tabular-nums',
     itemSeparator: 'grid h-9 place-content-center',
     itemEllipsis:
-      'data-data-focus-visible:border-primary data-focused:outline-hidden data-data-focus-visible:bg-primary/10 data-data-focus-visible:ring-4 data-data-focus-visible:ring-primary/20 flex size-9 items-center justify-center rounded-lg border border-transparent',
+      'data-focus-visible:border-primary data-focus-visible:bg-primary/10 data-focus-visible:ring-primary/20 flex size-9 items-center justify-center rounded-lg border border-transparent data-focus-visible:ring-4 data-focused:outline-hidden',
     itemEllipsisIcon: 'flex size-9 items-center justify-center',
     defaultItem:
-      'data-data-focus-visible:border-primary data-data-focus-visible:bg-primary/10 data-data-focus-visible:ring-4 data-data-focus-visible:ring-primary/20 cursor-pointer font-normal tabular-nums disabled:cursor-default disabled:opacity-100',
+      'data-focus-visible:border-primary data-focus-visible:bg-primary/10 data-focus-visible:ring-primary/20 cursor-pointer font-normal tabular-nums disabled:cursor-default disabled:opacity-100 data-focus-visible:ring-4',
     itemSeparatorLine:
-      'h-5 w-[1.5px] shrink-0 rotate-[14deg] bg-secondary-foreground/40',
+      'bg-secondary-fg/40 h-5 w-[1.5px] shrink-0 rotate-[14deg]',
   },
 })
 
@@ -51,24 +53,38 @@ const {
   itemSeparatorLine,
 } = paginationStyles()
 
-const Pagination = ({ className, ...props }: React.ComponentProps<'nav'>) => (
+type PagginationProps = React.ComponentProps<'nav'>
+const Pagination = ({ className, ref, ...props }: PagginationProps) => (
   <nav
     aria-label="pagination"
+    ref={ref}
     className={pagination({ className })}
     {...props}
   />
 )
 
+interface PaginationSectionProps<T> extends ListBoxSectionProps<T> {
+  ref?: React.RefObject<HTMLElement>
+}
 const PaginationSection = <T extends object>({
   className,
+  ref,
   ...props
-}: SectionProps<T>) => (
-  <ListBoxSection {...props} className={section({ className })} />
+}: PaginationSectionProps<T>) => (
+  <ListBoxSection ref={ref} {...props} className={section({ className })} />
 )
 
-const List = <T extends object>({ className, ...props }: ListBoxProps<T>) => {
+interface PaginationListProps<T> extends ListBoxProps<T> {
+  ref?: React.RefObject<HTMLDivElement>
+}
+const List = <T extends object>({
+  className,
+  ref,
+  ...props
+}: PaginationListProps<T>) => {
   return (
     <ListBox
+      ref={ref}
       orientation="horizontal"
       aria-label={props['aria-label'] || 'Pagination'}
       layout="grid"
@@ -94,11 +110,11 @@ interface PaginationItemProps extends ListBoxItemProps {
   children?: React.ReactNode
   className?: string
   intent?: 'primary' | 'secondary'
-  size?: 'md' | 'lg' | 'xs' | 'sm'
+  size?: 'medium' | 'large' | 'square-petite' | 'extra-small' | 'small'
   shape?: 'square' | 'circle'
   appearance?: 'solid' | 'outline' | 'plain'
   isCurrent?: boolean
-  variant?:
+  segment?:
     | 'label'
     | 'separator'
     | 'ellipsis'
@@ -110,8 +126,8 @@ interface PaginationItemProps extends ListBoxItemProps {
 }
 
 const Item = ({
-  variant = 'default',
-  size = 'sm',
+  segment = 'default',
+  size = 'small',
   appearance = 'outline',
   intent,
   className,
@@ -129,15 +145,14 @@ const Item = ({
   const renderPaginationIndicator = (indicator: React.ReactNode) =>
     renderListItem(
       {
-        textValue: variant,
+        textValue: segment,
         'aria-current': isCurrent ? 'page' : undefined,
         isDisabled: isCurrent,
         className: cn(
           buttonStyles({
             appearance: 'outline',
-            size: 'sm',
+            size: 'small',
             className: itemButton(),
-            layoutMode: 'icon',
           }),
           className,
         ),
@@ -146,7 +161,7 @@ const Item = ({
       indicator,
     )
 
-  switch (variant) {
+  switch (segment) {
     case 'label':
       return renderListItem(
         {
@@ -210,4 +225,10 @@ Pagination.Item = Item
 Pagination.List = List
 Pagination.Section = PaginationSection
 
+export type {
+  PagginationProps,
+  PaginationListProps,
+  PaginationSectionProps,
+  PaginationItemProps,
+}
 export { Pagination }

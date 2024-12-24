@@ -55,15 +55,29 @@ export const cr = composeRenderProps
 export function cn(...classes: ClassValue[]): string {
   return twMerge(clsx(classes))
 }
-/**
- * Default styles for focus states.
- */
+
+export const focusRing = tv({
+  variants: {
+    isFocused: { true: 'ring-ring/20 ring-4 outline-hidden' },
+    isFocusVisible: { true: 'ring-ring/20 ring-4 outline-hidden' },
+    isInvalid: { true: 'ring-danger/20 ring-4' },
+  },
+})
+
+export const focusStyles = tv({
+  extend: focusRing,
+  variants: {
+    isFocused: { true: 'border-ring/70 forced-colors:border-[Highlight]' },
+    isInvalid: { true: 'border-danger/70 forced-colors:border-[Mark]' },
+  },
+})
+
 export const focusButtonStyles = tv({
-  base: 'outline-none ring-ring ring-offset-background',
+  base: 'outline-ring outline outline-offset-2 forced-colors:outline-[Highlight]',
   variants: {
     isFocusVisible: {
-      false: 'ring-0',
-      true: 'ring-2 ring-offset-2',
+      false: 'outline-0',
+      true: 'outline-2',
     },
   },
 })

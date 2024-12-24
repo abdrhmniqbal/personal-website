@@ -1,5 +1,6 @@
-import { Github01Icon, Mail01Icon, NewTwitterIcon } from 'hugeicons-react'
+import { GithubIcon, Mail01Icon, NewTwitterIcon } from 'hugeicons-react'
 import { Link } from 'react-router'
+import { cn } from '@/lib/utils/css'
 import { TypewriterEffect } from '@/ui/blocks/typewriter-effect'
 import { buttonStyles } from '@/ui/components/button'
 import { Tooltip } from '@/ui/components/tooltip'
@@ -12,7 +13,7 @@ const socialLinks = [
   },
   {
     href: 'https://github.com/abdrhmniqbal',
-    icon: Github01Icon,
+    icon: GithubIcon,
     title: 'Follow me on Github',
   },
   {
@@ -43,25 +44,28 @@ export default function Hero() {
     <div className="flex min-h-[calc(100vh-72px)] w-full flex-col items-start space-y-4 pt-24">
       <TypewriterEffect
         words={words}
-        className="text-2xl sm:text-2xl md:text-3xl lg:text-5xl"
+        className="text-left text-2xl whitespace-nowrap sm:text-2xl md:text-3xl"
       />
-      <p className="text-base text-muted-foreground xl:w-2/3">
+      <p className="text-muted-fg text-base xl:w-2/3">
         I am a web developer residing in Bandung, passionate about crafting
         intuitive, user-friendly, and performant web applications.
       </p>
-      <div className="flex space-x-4">
+      <div className="mt-2 flex space-x-4">
         {socialLinks.map(({ href, icon: Icon, title }) => (
           <Tooltip delay={0} key={title}>
             <Tooltip.Trigger>
               <Link
                 to={href}
-                className={buttonStyles({
-                  appearance: 'outline',
-                  layoutMode: 'icon',
-                })}
+                className={cn(
+                  buttonStyles({
+                    appearance: 'outline',
+                    size: 'square-petite',
+                  }),
+                  'size-10',
+                )}
                 target="_blank"
               >
-                <Icon strokeWidth={2} />
+                <Icon data-slot="icon" strokeWidth={2} />
               </Link>
             </Tooltip.Trigger>
             <Tooltip.Content>{title}</Tooltip.Content>

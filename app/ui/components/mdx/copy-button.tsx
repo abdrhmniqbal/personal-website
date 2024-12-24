@@ -58,8 +58,8 @@ export function CopyButton({ value }: { value: string }) {
       <Menu>
         <Menu.Trigger
           className={cn(
-            buttonStyles({ appearance: 'plain', layoutMode: 'icon' }),
-            'absolute right-0 top-0 z-10 mr-2 mt-3 size-8 p-2 text-background hover:bg-transparent hover:text-background/60 dark:text-foreground dark:hover:text-foreground/60 [&_svg]:size-4',
+            buttonStyles({ appearance: 'plain', size: 'square-petite' }),
+            'text-bg hover:text-bg/60 dark:text-fg dark:hover:text-fg/60 absolute top-0 right-0 z-10 mt-3 mr-2 size-8 p-2 hover:bg-transparent [&_svg]:size-4',
           )}
         >
           {state === 'copied' ? (
@@ -85,9 +85,9 @@ export function CopyButton({ value }: { value: string }) {
 
   return (
     <Button
-      layoutMode="icon"
+      size="square-petite"
       appearance="plain"
-      className="absolute right-0 top-0 z-10 mr-2 mt-3 size-8 p-2 text-background hover:bg-transparent hover:text-background/60 dark:text-foreground dark:hover:text-foreground/60 [&_svg]:size-4"
+      className="text-bg hover:text-bg/60 dark:text-fg dark:hover:text-fg/60 absolute top-0 right-0 z-10 mt-3 mr-2 size-8 p-2 hover:bg-transparent [&_svg]:size-4"
       onPress={() => handleCopy(value)}
     >
       <span className="sr-only">Copy</span>

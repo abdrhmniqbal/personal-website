@@ -1,92 +1,71 @@
+'use client'
+
 import { Cancel01Icon } from 'hugeicons-react'
-import React from 'react'
+import { useEffect, useRef } from 'react'
+
 import {
-  Button as DialogCloseIndicatorPrimitive,
-  Dialog as DialogPrimitive,
-  Heading as DialogTitlePrimitive,
-  Button as DialogTriggerPrimitive,
-  OverlayTriggerStateContext,
+  type ButtonProps as ButtonPrimitiveProps,
   type DialogProps,
-  type HeadingProps as DialogTitlePrimitiveProps,
-  type ButtonProps as DialogTriggerProps,
+  type HeadingProps,
+  Button as ButtonPrimitive,
+  Dialog as DialogPrimitive,
+  Heading,
 } from 'react-aria-components'
+
 import { tv } from 'tailwind-variants'
+
 import { useMediaQuery } from '@/lib/hooks/use-media-query'
-import {
-  Button as DialogClosePrimitive,
-  type ButtonProps as DialogCloseProps,
-} from '@/ui/components/button'
+import { Button, type ButtonProps } from './button'
 
-/** Styless Variants */
-export const dialogStyles = tv({
-  base: 'dlc relative flex max-h-[inherit] flex-col overflow-hidden outline-none [scrollbar-width:thin] [&::-webkit-scrollbar]:size-0.5',
-})
-
-export const dialogHeaderStyles = tv({
-  base: 'relative flex flex-col pb-3 pt-4 sm:pt-6',
-})
-
-export const dialogDescriptionStyles = tv({
-  base: 'mt-0.5 block text-sm text-muted-foreground sm:mt-1',
-})
-
-export const dialogBodyStyles = tv({
-  base: 'flex flex-1 flex-col gap-2 overflow-auto px-4 py-1 sm:px-6',
-})
-
-export const dialogFooterStyles = tv({
-  base: 'mt-auto flex flex-col-reverse justify-between gap-3 pb-4 pt-4 sm:flex-row sm:pb-6',
-})
-
-export const closeIndicatorStyles = tv({
-  base: 'close absolute right-1 top-1 z-50 grid size-8 place-content-center rounded-xl hover:bg-secondary focus:bg-secondary sm:right-2 sm:top-2 sm:size-7 sm:rounded-md',
-})
-
-export const titleStyles = tv({
-  base: 'flex flex-1 items-center text-foreground',
-  variants: {
-    level: {
-      1: 'text-lg font-semibold sm:text-xl',
-      2: 'text-lg font-semibold sm:text-xl',
-      3: 'text-base font-semibold sm:text-lg',
-      4: 'text-base font-semibold',
-    },
+const dialogStyles = tv({
+  slots: {
+    root: [
+      'peer group/dialog relative flex max-h-[inherit] flex-col overflow-hidden outline-hidden [scrollbar-width:thin] not-has-data-[slot=dialog-body]:**:data-[slot=dialog-header]:pb-0 [&::-webkit-scrollbar]:size-0.5',
+    ],
+    header: 'relative flex flex-col gap-0.5 p-4 sm:gap-1 sm:p-6',
+    description: 'text-muted-fg text-sm',
+    body: [
+      'has-[input]:pb-1',
+      'isolate flex flex-1 flex-col overflow-auto px-4 sm:px-6',
+      'max-h-[calc(var(--visual-viewport-height)-var(--visual-viewport-vertical-padding)-var(--dialog-header-height,0px)-var(--dialog-footer-height,0px))]',
+    ],
+    footer:
+      'isolate mt-auto flex flex-col-reverse justify-between gap-3 p-4 sm:flex-row sm:p-6',
+    closeIndicator:
+      'close data-focused:bg-secondary data-hovered:bg-secondary data-focus-visible:ring-primary absolute top-1 right-1 z-50 grid size-8 place-content-center rounded-xl data-focus-visible:ring-1 data-focused:outline-hidden sm:top-2 sm:right-2 sm:size-7 sm:rounded-md',
   },
 })
 
-/** Dialog Component */
-const Dialog = ({ role, className, ...props }: DialogProps) => (
-  <DialogPrimitive
-    {...props}
-    role={role ?? 'dialog'}
-    className={dialogStyles({ className })}
-  />
-)
-Dialog.displayName = 'Dialog'
+const { root, header, description, body, footer, closeIndicator } =
+  dialogStyles()
 
-/** Trigger Component */
-const DialogTrigger = ({ children, ...props }: DialogTriggerProps) => (
-  <DialogTriggerPrimitive {...props}>
-    {(values) => (
-      <>{typeof children === 'function' ? children(values) : children}</>
-    )}
-  </DialogTriggerPrimitive>
-)
-DialogTrigger.displayName = 'DialogTrigger'
+const Dialog = ({ role, className, ...props }: DialogProps) => {
+  return (
+    <DialogPrimitive
+      role={role ?? 'dialog'}
+      className={root({ className })}
+      {...props}
+    />
+  )
+}
 
-/** Header Component */
-export interface DialogHeaderProps
-  extends React.HTMLAttributes<HTMLDivElement> {
+const Trigger = (props: ButtonPrimitiveProps) => (
+  <ButtonPrimitive slot="close" {...props} />
+)
+
+type DialogHeaderProps = React.HTMLAttributes<HTMLDivElement> & {
   title?: string
   description?: string
 }
 
-const DialogHeader = ({ className, ...props }: DialogHeaderProps) => {
-  const headerRef = React.useRef<HTMLHeadingElement>(null)
+const Header = ({ className, ...props }: DialogHeaderProps) => {
+  const headerRef = useRef<HTMLHeadingElement>(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     const header = headerRef.current
-    if (!header) return
+    if (!header) {
+      return
+    }
 
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
@@ -105,70 +84,70 @@ const DialogHeader = ({ className, ...props }: DialogHeaderProps) => {
     <div
       data-slot="dialog-header"
       ref={headerRef}
-      className={dialogHeaderStyles({ className })}
+      className={header({ className })}
     >
-      {props.title && <DialogTitle>{props.title}</DialogTitle>}
-      {props.description && (
-        <DialogDescription>{props.description}</DialogDescription>
-      )}
+      {props.title && <Title>{props.title}</Title>}
+      {props.description && <Description>{props.description}</Description>}
       {!props.title && typeof props.children === 'string' ? (
-        <DialogTitle {...props} />
+        <Title {...props} />
       ) : (
         props.children
       )}
     </div>
   )
 }
-DialogHeader.displayName = 'DialogHeader'
 
-/** Title Component */
-export interface DialogTitleProps
-  extends Omit<DialogTitlePrimitiveProps, 'level'> {
+const titleStyles = tv({
+  base: 'text-fg flex flex-1 items-center',
+  variants: {
+    level: {
+      1: 'text-lg font-semibold sm:text-xl',
+      2: 'text-lg font-semibold sm:text-xl',
+      3: 'text-base font-semibold sm:text-lg',
+      4: 'text-base font-semibold',
+    },
+  },
+})
+
+interface DialogTitleProps extends Omit<HeadingProps, 'level'> {
   level?: 1 | 2 | 3 | 4
+  ref?: React.Ref<HTMLHeadingElement>
 }
-
-const DialogTitle = ({ level = 2, className, ...props }: DialogTitleProps) => (
-  <DialogTitlePrimitive
+const Title = ({ level = 2, className, ref, ...props }: DialogTitleProps) => (
+  <Heading
     slot="title"
     level={level}
+    ref={ref}
     className={titleStyles({ level, className })}
     {...props}
   />
 )
-DialogTitle.displayName = 'DialogTitle'
 
-/** Description Component */
-const DialogDescription = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={dialogDescriptionStyles({ className })} {...props} />
+type DialogDescriptionProps = React.ComponentProps<'div'>
+const Description = ({ className, ref, ...props }: DialogDescriptionProps) => (
+  <div className={description({ className })} ref={ref} {...props} />
 )
-DialogDescription.displayName = 'DialogDescription'
 
-/** Body Component */
-const DialogBody = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
+type DialogBodyProps = React.ComponentProps<'div'>
+const Body = ({ className, ref, ...props }: DialogBodyProps) => (
   <div
     data-slot="dialog-body"
-    className={dialogBodyStyles({ className })}
+    ref={ref}
+    className={body({ className })}
     {...props}
   />
 )
-DialogBody.displayName = 'DialogBody'
 
-/** Footer Component */
-const DialogFooter = ({
-  className,
-  ...props
-}: React.HTMLAttributes<HTMLDivElement>) => {
-  const footerRef = React.useRef<HTMLDivElement>(null)
+type DialogFooterProps = React.ComponentProps<'div'>
+const Footer = ({ className, ...props }: DialogFooterProps) => {
+  const footerRef = useRef<HTMLDivElement>(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     const footer = footerRef.current
-    if (!footer) return
+
+    if (!footer) {
+      return
+    }
 
     const observer = new ResizeObserver((entries) => {
       for (const entry of entries) {
@@ -180,88 +159,79 @@ const DialogFooter = ({
     })
 
     observer.observe(footer)
-    return () => observer.unobserve(footer)
+    return () => {
+      observer.unobserve(footer)
+    }
   }, [])
-
   return (
     <div
       ref={footerRef}
       data-slot="dialog-footer"
-      className={dialogFooterStyles({ className })}
+      className={footer({ className })}
       {...props}
     />
   )
 }
-DialogFooter.displayName = 'DialogFooter'
 
-/** Close Component */
-const DialogClose = ({
+const Close = ({
   className,
   appearance = 'outline',
+  ref,
   ...props
-}: DialogCloseProps) => {
-  const state = React.useContext(OverlayTriggerStateContext)!
+}: ButtonProps) => {
   return (
-    <DialogClosePrimitive
+    <Button
+      slot="close"
       className={className}
+      ref={ref}
       appearance={appearance}
-      onPress={() => state.close()}
       {...props}
     />
   )
 }
-DialogClose.displayName = 'DialogClose'
 
-/** Close Indicator Component */
-export interface CloseButtonIndicatorProps {
+interface CloseButtonIndicatorProps extends ButtonProps {
   className?: string
-  close: () => void
   isDismissable?: boolean | undefined
 }
 
-const DialogCloseIndicator = ({
-  className,
-  ...props
-}: CloseButtonIndicatorProps) => {
+const CloseIndicator = ({ className, ...props }: CloseButtonIndicatorProps) => {
   const isMobile = useMediaQuery('(max-width: 600px)')
-  const buttonRef = React.useRef<HTMLButtonElement>(null)
+  const buttonRef = useRef<HTMLButtonElement>(null)
 
-  React.useEffect(() => {
+  useEffect(() => {
     if (isMobile && buttonRef.current) {
       buttonRef.current.focus()
     }
   }, [isMobile])
-
   return props.isDismissable ? (
-    <DialogCloseIndicatorPrimitive
+    <ButtonPrimitive
       ref={buttonRef}
       {...(isMobile ? { autoFocus: true } : {})}
       aria-label="Close"
-      onPress={props.close}
-      className={closeIndicatorStyles({ className })}
+      slot="close"
+      className={closeIndicator({ className })}
     >
       <Cancel01Icon className="size-4" strokeWidth={2} />
-    </DialogCloseIndicatorPrimitive>
+    </ButtonPrimitive>
   ) : null
 }
-DialogCloseIndicator.displayName = 'DialogCloseIndicator'
 
-export {
-  Dialog,
-  DialogBody,
-  DialogClose,
-  DialogCloseIndicator,
-  DialogCloseIndicatorPrimitive,
-  DialogClosePrimitive,
-  DialogCloseProps,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogPrimitive,
-  DialogTitle,
-  DialogTitlePrimitive,
-  DialogTitlePrimitiveProps,
-  DialogTrigger,
-  DialogTriggerPrimitive,
-  DialogTriggerProps,
+Dialog.Trigger = Trigger
+Dialog.Header = Header
+Dialog.Title = Title
+Dialog.Description = Description
+Dialog.Body = Body
+Dialog.Footer = Footer
+Dialog.Close = Close
+Dialog.CloseIndicator = CloseIndicator
+
+export type {
+  DialogHeaderProps,
+  DialogTitleProps,
+  DialogBodyProps,
+  DialogFooterProps,
+  DialogDescriptionProps,
+  CloseButtonIndicatorProps,
 }
+export { Dialog }

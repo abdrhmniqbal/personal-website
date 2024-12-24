@@ -56,16 +56,16 @@ export function ThemeSwitch({
 
   const nextTheme = nextThemes[currentTheme]
   const modeIcons = {
-    system: <LaptopIcon className="size-5 text-foreground" strokeWidth={2} />,
+    system: <LaptopIcon className="text-fg size-5" strokeWidth={2} />,
     light: (
       <Sun01Icon
-        className="absolute size-5 rotate-90 scale-100 text-foreground transition-all dark:rotate-0 dark:scale-0"
+        className="text-fg absolute size-5 scale-100 rotate-90 transition-all dark:scale-0 dark:rotate-0"
         strokeWidth={2}
       />
     ),
     dark: (
       <Moon02Icon
-        className="absolute size-5 rotate-90 scale-0 text-foreground transition-all dark:rotate-0 dark:scale-100"
+        className="text-fg absolute size-5 scale-0 rotate-90 transition-all dark:scale-100 dark:rotate-0"
         strokeWidth={2}
       />
     ),
@@ -98,10 +98,7 @@ export function ThemeSwitch({
               )
             }
           >
-            <Sun01Icon
-              className="mr-2 size-4 text-foreground"
-              strokeWidth={2}
-            />
+            <Sun01Icon className="text-fg mr-2 size-4" strokeWidth={2} />
             <span>Light</span>
           </Menu.Item>
           <Menu.Item
@@ -112,10 +109,7 @@ export function ThemeSwitch({
               )
             }
           >
-            <Moon02Icon
-              className="mr-2 size-4 text-foreground"
-              strokeWidth={2}
-            />
+            <Moon02Icon className="text-fg mr-2 size-4" strokeWidth={2} />
             <span>Dark</span>
           </Menu.Item>
           <Menu.Item
@@ -126,10 +120,7 @@ export function ThemeSwitch({
               )
             }
           >
-            <LaptopIcon
-              className="mr-2 size-4 text-foreground"
-              strokeWidth={2}
-            />
+            <LaptopIcon className="text-fg mr-2 size-4" strokeWidth={2} />
             <span>System</span>
           </Menu.Item>
         </Menu.Content>

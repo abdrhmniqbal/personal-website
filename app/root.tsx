@@ -55,7 +55,7 @@ export const links: Route.LinksFunction = () => [
   },
   {
     rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+    href: 'https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&display=swap',
   },
 ]
 
@@ -174,20 +174,20 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
 
         return (
           <>
-            <h1 className="text-4xl font-semibold leading-10 tracking-tighter">
+            <h1 className="text-4xl leading-10 font-semibold tracking-tighter">
               {error.status} - {text}
             </h1>
-            <p className="text-muted-foreground text-sm">{message}</p>
+            <p className="text-muted-fg text-sm">{message}</p>
           </>
         )
       }
 
       return (
         <>
-          <h1 className="text-4xl font-semibold leading-10 tracking-tighter">
+          <h1 className="text-4xl leading-10 font-semibold tracking-tighter">
             {error.status} - {error.statusText}
           </h1>
-          <p className="text-muted-foreground text-sm">{error.data}</p>
+          <p className="text-muted-fg text-sm">{error.data}</p>
         </>
       )
     } else if (error instanceof Error) {
@@ -214,7 +214,7 @@ export function ErrorBoundary({ error }: Route.ErrorBoundaryProps) {
       <Link
         to="/"
         className={cn(
-          buttonStyles({ appearance: 'outline', size: 'sm' }),
+          buttonStyles({ appearance: 'outline', size: 'small' }),
           'mt-2',
         )}
       >

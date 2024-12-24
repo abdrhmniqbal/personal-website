@@ -11,9 +11,11 @@ export default function MainLayout({
   userPreference?: Theme | null
 }) {
   return (
-    <Container className="mx-auto flex w-full flex-col">
-      <Navbar />
-      {children}
+    <Container className="mx-auto flex min-h-screen w-full flex-col justify-between">
+      <div>
+        <Navbar />
+        {children}
+      </div>
       <Footer userPreference={userPreference} />
     </Container>
   )

@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'tailwindcss';
 
 @layer utilities {
   .grid-background::before {
@@ -10,6 +8,6 @@
     z-index: -2;
     mask-image: linear-gradient(to bottom, black, transparent);
     -webkit-mask-image: linear-gradient(to bottom, black, transparent);
-    @apply absolute bottom-0 left-0 right-0 top-0 dark:invert;
+    @apply absolute top-0 right-0 bottom-0 left-0 dark:invert;
   }
 }

@@ -1,16 +1,17 @@
 import { type SitemapHandle } from '@forge42/seo-tools/remix/sitemap'
-import { ArrowLeft02Icon } from 'hugeicons-react'
+import { ArrowLeft01Icon } from 'hugeicons-react'
 import { Link } from 'react-router'
 import { posts } from '@/contents/generated'
 import { formatDate } from '@/lib/utils/date'
 import { toTitleCase } from '@/lib/utils/string'
 import { type SitemapData } from '@/routes/sitemap[.]xml'
+import { badgeStyles } from '@/ui/components/badge'
 import { buttonStyles } from '@/ui/components/button'
 import { ClientOnly } from '@/ui/components/client-only'
 import { Container } from '@/ui/components/container'
+import { Heading } from '@/ui/components/heading'
 import { Image } from '@/ui/components/image'
 import { Mdx } from '@/ui/components/mdx/component'
-import { tagStyles } from '@/ui/components/tag'
 import { type Route } from './+types/post.$slug'
 
 export const handle: SitemapHandle<SitemapData> = {
@@ -55,20 +56,23 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { post } = loaderData
   return (
-    <Container className="container max-w-3xl pt-6 lg:max-w-3xl lg:py-12 xl:max-w-4xl 2xl:max-w-4xl">
+    <Container className="max-w-3xl pt-6 pb-[12vh] lg:max-w-3xl lg:pt-12 xl:max-w-4xl 2xl:max-w-4xl">
       <Link to="/posts" className={buttonStyles({ appearance: 'outline' })}>
-        <ArrowLeft02Icon strokeWidth={2} />
+        <ArrowLeft01Icon data-slot="icon" strokeWidth={2} />
         See all posts
       </Link>
-      <div className="mb-4 mt-6 flex flex-col">
-        <div className="space-x-2 text-sm text-muted-foreground">
+      <div className="mt-6 mb-4 flex flex-col">
+        <div className="text-muted-fg space-x-2 text-sm">
           <time>Published on {formatDate(post.createdAt)}</time>
           <span>•</span>
           <span>{post.metadata.readingTime} min read</span>
         </div>
-        <h1 className="mt-2 inline-block text-4xl font-semibold leading-tight lg:text-5xl">
+        <Heading
+          level={1}
+          className="mt-2 inline-block text-3xl leading-tight font-semibold lg:text-4xl"
+        >
           {post.title}
-        </h1>
+        </Heading>
         {post.cover && (
           <Image
             src={post.cover.src}
@@ -76,7 +80,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             layout="constrained"
             width={post.cover.width}
             height={post.cover.height}
-            className="my-8 rounded-lg border-[1px] border-border"
+            className="border-border my-8 rounded-lg border-[1px]"
           />
         )}
       </div>
@@ -91,7 +95,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
                 <Link
                   key={index}
                   to={`/posts/tags/${tag}`}
-                  className={tagStyles()}
+                  className={badgeStyles()}
                 >
                   {toTitleCase(tag)}
                 </Link>

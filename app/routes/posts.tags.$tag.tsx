@@ -1,9 +1,10 @@
-import { useNavigate, Link } from 'react-router'
+import { useNavigate } from 'react-router'
 import { posts } from '@/contents/generated'
-import { cn } from '@/lib/utils/css'
 import { toTitleCase } from '@/lib/utils/string'
+import NoResult from '@/ui/blocks/no-result'
 import PostCard from '@/ui/blocks/post-card'
-import { buttonStyles } from '@/ui/components/button'
+import { Description } from '@/ui/components/field'
+import { Heading } from '@/ui/components/heading'
 import { Pagination } from '@/ui/components/pagination'
 import { type Route } from './+types/posts.tags.$tag'
 
@@ -47,6 +48,7 @@ export async function loader({ context, request, params }: Route.LoaderArgs) {
   return {
     paginatedPosts,
     totalPages,
+    totalPosts,
     tagFilter,
     currentPage: page,
     APP_NAME: context.env.APP_NAME,
@@ -54,7 +56,8 @@ export async function loader({ context, request, params }: Route.LoaderArgs) {
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { paginatedPosts, totalPages, currentPage, tagFilter } = loaderData
+  const { paginatedPosts, totalPages, currentPage, tagFilter, totalPosts } =
+    loaderData
   const navigate = useNavigate()
 
   const navigateToPage = (page: number) => {
@@ -64,48 +67,38 @@ export default function Page({ loaderData }: Route.ComponentProps) {
 
   return (
     <div className="flex flex-col items-start justify-center space-y-8 pb-[20vh]">
-      <h2 className="text-3xl font-semibold leading-10 tracking-tighter">
-        Tags: {toTitleCase(tagFilter)}
-      </h2>
-
+      <div className="flex flex-col space-y-1">
+        <Heading level={1} className="pt-8">
+          Tags: {toTitleCase(tagFilter)}
+        </Heading>
+        {totalPosts > 0 && (
+          <Description>
+            There are {totalPosts} {totalPosts === 1 ? 'post' : 'posts'} found
+            tagged with {toTitleCase(tagFilter)}.
+          </Description>
+        )}
+      </div>
       {paginatedPosts.length > 0 ? (
-        paginatedPosts.map((post, index) => (
-          <PostCard post={post} key={index} />
-        ))
-      ) : (
-        <div className="flex min-h-[300px] w-full flex-col items-center justify-center gap-2">
-          <div className="text-center">
-            <h2 className="text-4xl font-semibold leading-10 tracking-tighter">
-              No result found
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              There are no posts to display.
-            </p>
-            <Link
-              to="/posts"
-              className={cn(
-                buttonStyles({ appearance: 'outline', size: 'sm' }),
-                'mt-2',
-              )}
-            >
-              Back to Posts
-            </Link>
-          </div>
+        <div className="flex w-full flex-col space-y-4">
+          {paginatedPosts.map((post, index) => (
+            <PostCard post={post} key={index} />
+          ))}
         </div>
+      ) : (
+        <NoResult />
       )}
-
       {totalPages > 1 && (
         <Pagination className="w-full justify-start">
           <Pagination.List>
             {currentPage > 1 && (
               <>
                 <Pagination.Item
-                  variant="first"
+                  segment="first"
                   onAction={() => navigateToPage(1)}
                   isDisabled={currentPage === 1}
                 />
                 <Pagination.Item
-                  variant="previous"
+                  segment="previous"
                   onAction={() => navigateToPage(currentPage - 1)}
                   isDisabled={currentPage === 1}
                 />
@@ -125,12 +118,12 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             {currentPage < totalPages && (
               <>
                 <Pagination.Item
-                  variant="next"
+                  segment="next"
                   onAction={() => navigateToPage(currentPage + 1)}
                   isDisabled={currentPage === totalPages}
                 />
                 <Pagination.Item
-                  variant="last"
+                  segment="last"
                   onAction={() => navigateToPage(totalPages)}
                   isDisabled={currentPage === totalPages}
                 />

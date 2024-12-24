@@ -15,7 +15,7 @@ export default function Navbar() {
           <NavLink
             className={({ isActive }) =>
               cn(
-                buttonStyles({ appearance: 'link' }),
+                buttonStyles({ appearance: 'plain', size: 'small' }),
                 isActive && 'font-semibold underline',
               )
             }

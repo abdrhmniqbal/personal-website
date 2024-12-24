@@ -1,79 +1,107 @@
-import React from 'react'
-import { cn } from '@/lib/utils/css'
+import { tv } from 'tailwind-variants'
+import { Heading } from '@/ui/components/heading'
 
-/** Card Base Component */
-const Base = ({
+const card = tv({
+  slots: {
+    root: [
+      'xrkr bg-bg xkd2 **:data-[slot=table-header]:bg-muted/50 text-fg rounded-lg border shadow-xs has-[table]:overflow-hidden has-[table]:**:data-[slot=card-footer]:border-t **:[table]:overflow-hidden',
+    ],
+    header: 'flex flex-col gap-y-1 px-6 py-5',
+    title: 'leading-none font-semibold tracking-tight sm:leading-6',
+    description: 'text-muted-fg text-sm',
+    content:
+      'has-[[data-slot=table-header]]:bg-muted/40 px-6 pb-6 has-[table]:border-t has-[table]:p-0 **:data-[slot=table-cell]:px-6 **:data-[slot=table-column]:px-6 [&:has(table)+[data-slot=card-footer]]:py-5',
+    footer: 'flex items-center p-6 pt-0',
+  },
+})
+
+const { root, header, title, description, content, footer } = card()
+
+const Card = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      'rounded-lg border bg-background text-foreground shadow-sm',
-      className,
-    )}
-    {...props}
-  />
-)
-Base.displayName = 'Card'
+}: React.HTMLAttributes<HTMLDivElement>) => {
+  return <div data-slot="card" className={root({ className })} {...props} />
+}
 
-/** Card Header Component */
+interface HeaderProps extends React.HTMLAttributes<HTMLDivElement> {
+  title?: string
+  description?: string
+}
+
 const Header = ({
   className,
+  title,
+  description,
+  children,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('flex flex-col space-y-1.5 p-6', className)} {...props} />
+}: HeaderProps) => (
+  <div data-slot="card-header" className={header({ className })} {...props}>
+    {title && <Title>{title}</Title>}
+    {description && <Description>{description}</Description>}
+    {!title && typeof children === 'string' ? (
+      <Title>{children}</Title>
+    ) : (
+      children
+    )}
+  </div>
 )
-Header.displayName = 'CardHeader'
 
-/** Card Title Component */
 const Title = ({
   className,
+  level = 3,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div
-    className={cn(
-      'text-2xl font-semibold leading-none tracking-tight',
-      className,
-    )}
-    {...props}
-  />
-)
-Title.displayName = 'CardTitle'
+}: React.ComponentProps<typeof Heading>) => {
+  return (
+    <Heading
+      data-slot="card-title"
+      level={level}
+      className={title({ className })}
+      {...props}
+    />
+  )
+}
 
-/** Card Description Component */
 const Description = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('text-sm text-muted-foreground', className)} {...props} />
-)
-Description.displayName = 'CardDescription'
+}: React.HTMLAttributes<HTMLDivElement>) => {
+  return (
+    <div
+      {...props}
+      data-slot="description"
+      className={description({ className })}
+      {...props}
+    />
+  )
+}
 
-/** Card Content Component */
 const Content = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('p-6 pt-0', className)} {...props} />
-)
-Content.displayName = 'CardContent'
+}: React.HTMLAttributes<HTMLDivElement>) => {
+  return (
+    <div
+      data-slot="card-content"
+      className={content({ className })}
+      {...props}
+    />
+  )
+}
 
-/** Card Footer Component */
 const Footer = ({
   className,
   ...props
-}: React.HTMLAttributes<HTMLDivElement>) => (
-  <div className={cn('flex items-center p-6 pt-0', className)} {...props} />
-)
-Footer.displayName = 'CardFooter'
+}: React.HTMLAttributes<HTMLDivElement>) => {
+  return (
+    <div data-slot="card-footer" className={footer({ className })} {...props} />
+  )
+}
 
-/** Card Component Composition */
-const Card = Object.assign(Base, {
-  Header,
-  Content,
-  Description,
-  Footer,
-  Title,
-})
+Card.Content = Content
+Card.Description = Description
+Card.Footer = Footer
+Card.Header = Header
+Card.Title = Title
 
 export { Card }
