@@ -59,7 +59,7 @@ export async function loader({ context, request }: Route.LoaderArgs) {
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { paginatedPosts, totalPages, currentPage, query } = loaderData
   const [searchValue, setSearchValue] = useState(query || '')
-  const [debouncedSearch] = useDebounce(searchValue, 100)
+  const [debouncedSearch] = useDebounce(searchValue, 240)
   const navigate = useNavigate()
 
   const navigateToPage = (page: number) => {
