@@ -2,7 +2,6 @@ import '@/assets/styles/app.css'
 import '@/assets/styles/mdx.css'
 import '@/assets/styles/themes.css'
 import { generateMeta } from '@forge42/seo-tools/remix/metadata'
-import { article } from '@forge42/seo-tools/structured-data/article'
 import {
   Link,
   Links,
@@ -24,25 +23,12 @@ import MainLayout from '@/ui/layouts/main'
 import { type Route } from './+types/root'
 
 export function meta({ data }: Route.MetaArgs) {
-  const meta = generateMeta(
-    {
-      title: data ? data.APP_NAME : 'Error | Iqbal Abdurrahman',
-      description: `Web developer residing in Bandung, passionate about crafting
+  const meta = generateMeta({
+    title: data ? data.APP_NAME : 'Error | Iqbal Abdurrahman',
+    description: `Web developer residing in Bandung, passionate about crafting
         intuitive, user-friendly, and performant web applications.`,
-      url: data ? `${data.requestInfo.origin}${data.requestInfo.path}` : '/',
-    },
-    [
-      {
-        'script:ld+json': article({
-          '@type': 'Article',
-          headline: data ? data.APP_NAME : 'Error | Iqbal Abdurrahman',
-          image: data
-            ? `${data.requestInfo.origin}/resource/og?title=${data.APP_NAME}`
-            : null,
-        }),
-      },
-    ],
-  )
+    url: data ? `${data.requestInfo.origin}${data.requestInfo.path}` : '/',
+  })
 
   return meta
 }
@@ -107,7 +93,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Document nonce={nonce} theme={theme}>
       {children}
-			<Toast />
+      <Toast />
     </Document>
   )
 }
