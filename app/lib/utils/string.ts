@@ -38,3 +38,28 @@ export function getNameInitials(name: string): string {
 
   return initials
 }
+
+/**
+ * #### toTitleCase
+ *
+ * Convert string to title case
+ *
+ * * * *
+ * Example:
+ * ```typescript
+ * import { toTitleCase } from '@/lib/utils/string/to-title-case'
+ *
+ * const str = 'hello world'
+ * toTitleCase(str) // 'Hello World'
+ *
+ * ```
+ * * * *
+ * @param str String
+ * @return Title case string
+ */
+export function toTitleCase(str: string): string {
+  return str.replace(
+    /\w\S*/g,
+    (txt) => txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase(),
+  )
+}

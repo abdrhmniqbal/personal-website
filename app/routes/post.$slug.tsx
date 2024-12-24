@@ -3,12 +3,14 @@ import { ArrowLeft02Icon } from 'hugeicons-react'
 import { Link } from 'react-router'
 import { posts } from '@/contents/generated'
 import { formatDate } from '@/lib/utils/date'
+import { toTitleCase } from '@/lib/utils/string'
 import { type SitemapData } from '@/routes/sitemap[.]xml'
 import { buttonStyles } from '@/ui/components/button'
 import { ClientOnly } from '@/ui/components/client-only'
 import { Container } from '@/ui/components/container'
 import { Image } from '@/ui/components/image'
 import { Mdx } from '@/ui/components/mdx/component'
+import { Tag } from '@/ui/components/tag'
 import { type Route } from './+types/post.$slug'
 
 export const handle: SitemapHandle<SitemapData> = {
@@ -79,6 +81,20 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         )}
       </div>
       <ClientOnly>{() => <Mdx code={post.body} />}</ClientOnly>
+      {post.tags && (
+        <div className="mt-8 flex flex-col gap-2 pb-4">
+          <span className="text-sm">Tags:</span>
+          <div className="flex w-full items-center gap-2 overflow-hidden">
+            {[...post.tags]
+              .sort((a, b) => a.localeCompare(b))
+              .map((tag, index) => (
+                <Tag key={index} intent="primary" shape="circle">
+                  {toTitleCase(tag)}
+                </Tag>
+              ))}
+          </div>
+        </div>
+      )}
     </Container>
   )
 }

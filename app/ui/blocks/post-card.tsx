@@ -1,20 +1,17 @@
 import { ArrowRight02Icon } from 'hugeicons-react'
 import { Link } from 'react-router'
+import { type Post } from '@/contents/generated'
 import { formatDate } from '@/lib/utils/date'
+import { toTitleCase } from '@/lib/utils/string'
 import { Card } from '@/ui/components/card'
+import { ScrollArea, ScrollBar } from '@/ui/components/scroll-area'
+import { Tag } from '@/ui/components/tag'
 import { TouchTarget } from '@/ui/components/touch-target'
 
 interface PostCardProps {
-  post: {
-    slugAsParams: string
-    title: string
-    summary: string
-    createdAt: string
-    metadata: {
-      readingTime: number
-    }
-  }
+  post: Post
 }
+
 export default function PostCard({ post }: PostCardProps) {
   return (
     <Link to={`/post/${post.slugAsParams}`} className="w-full">
@@ -35,6 +32,22 @@ export default function PostCard({ post }: PostCardProps) {
             </Card.Description>
           </Card.Header>
           <Card.Content>{post.summary}</Card.Content>
+          {post.tags && (
+            <Card.Footer className="flex h-[32px] w-full p-0 px-6 pb-4 pt-0">
+              <ScrollArea className="flex w-full whitespace-nowrap">
+                <div className="flex w-full items-center gap-2 overflow-hidden pb-4">
+                  {[...post.tags]
+                    .sort((a, b) => a.localeCompare(b))
+                    .map((tag, index) => (
+                      <Tag key={index} intent="primary" shape="circle">
+                        {toTitleCase(tag)}
+                      </Tag>
+                    ))}
+                </div>
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
+            </Card.Footer>
+          )}
         </Card>
       </TouchTarget>
     </Link>

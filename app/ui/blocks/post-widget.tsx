@@ -1,18 +1,11 @@
 import { ArrowRight01Icon } from 'hugeicons-react'
 import { Link } from 'react-router'
+import  { type Post } from '@/contents/generated'
 import PostCard from '@/ui/blocks/post-card'
 import { buttonStyles } from '@/ui/components/button'
 
 interface PostWidgetProps {
-  posts: {
-    slugAsParams: string
-    title: string
-    summary: string
-    createdAt: string
-    metadata: {
-      readingTime: number
-    }
-  }[]
+  posts: Post[]
 }
 export default function PostWidget({ posts }: PostWidgetProps) {
   return (
