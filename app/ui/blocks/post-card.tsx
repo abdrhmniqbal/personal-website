@@ -5,7 +5,7 @@ import { formatDate } from '@/lib/utils/date'
 import { toTitleCase } from '@/lib/utils/string'
 import { Card } from '@/ui/components/card'
 import { ScrollArea, ScrollBar } from '@/ui/components/scroll-area'
-import { Tag } from '@/ui/components/tag'
+import { tagStyles } from '@/ui/components/tag'
 import { TouchTarget } from '@/ui/components/touch-target'
 
 interface PostCardProps {
@@ -39,9 +39,13 @@ export default function PostCard({ post }: PostCardProps) {
                   {[...post.tags]
                     .sort((a, b) => a.localeCompare(b))
                     .map((tag, index) => (
-                      <Tag key={index} intent="primary" shape="circle">
+                      <Link
+                        key={index}
+                        to={`/posts/tags/${tag}`}
+                        className={tagStyles()}
+                      >
                         {toTitleCase(tag)}
-                      </Tag>
+                      </Link>
                     ))}
                 </div>
                 <ScrollBar orientation="horizontal" />

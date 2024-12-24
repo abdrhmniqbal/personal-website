@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils/css'
 import PostCard from '@/ui/blocks/post-card'
 import { buttonStyles } from '@/ui/components/button'
 import { Pagination } from '@/ui/components/pagination'
-import { type Route } from './+types/posts'
+import { type Route } from './+types/posts.index'
 
 export function meta({ data }: Route.MetaArgs) {
   const { APP_NAME, currentPage } = data

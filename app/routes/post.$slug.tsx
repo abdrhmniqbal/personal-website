@@ -10,7 +10,7 @@ import { ClientOnly } from '@/ui/components/client-only'
 import { Container } from '@/ui/components/container'
 import { Image } from '@/ui/components/image'
 import { Mdx } from '@/ui/components/mdx/component'
-import { Tag } from '@/ui/components/tag'
+import { tagStyles } from '@/ui/components/tag'
 import { type Route } from './+types/post.$slug'
 
 export const handle: SitemapHandle<SitemapData> = {
@@ -88,9 +88,13 @@ export default function Page({ loaderData }: Route.ComponentProps) {
             {[...post.tags]
               .sort((a, b) => a.localeCompare(b))
               .map((tag, index) => (
-                <Tag key={index} intent="primary" shape="circle">
+                <Link
+                  key={index}
+                  to={`/posts/tags/${tag}`}
+                  className={tagStyles()}
+                >
                   {toTitleCase(tag)}
-                </Tag>
+                </Link>
               ))}
           </div>
         </div>
