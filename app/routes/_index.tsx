@@ -19,7 +19,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   return (
     <div className="grid-background flex flex-col items-center justify-center">
       <Hero />
-      <PostWidget posts={latestPosts} />
+      {latestPosts.length > 0 && <PostWidget posts={latestPosts} />}
     </div>
   )
 }
