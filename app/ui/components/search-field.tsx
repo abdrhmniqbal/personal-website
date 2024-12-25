@@ -18,7 +18,7 @@ const searchFieldStyles = tv({
     searchIcon:
       'text-muted-fg group-data-disabled:text-muted-fg ml-2.5 size-4 shrink-0 forced-colors:text-[ButtonText] forced-colors:group-data-disabled:text-[GrayText]',
     clearButton: [
-      'text-muted-fg data-hovered:text-fg data-pressed:text-fg mr-1 size-8 group-data-empty:invisible data-hovered:bg-transparent data-pressed:bg-transparent',
+      'text-muted-fg data-hovered:text-fg data-pressed:text-fg mr-1 size-8 p-2 group-data-empty:invisible data-hovered:bg-transparent data-pressed:bg-transparent',
     ],
     input: '[&::-webkit-search-cancel-button]:hidden',
   },

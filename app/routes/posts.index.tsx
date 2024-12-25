@@ -1,3 +1,4 @@
+import { motion } from 'motion/react'
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
 import { useDebounce } from 'use-debounce'
@@ -90,7 +91,14 @@ export default function Page({ loaderData }: Route.ComponentProps) {
       {paginatedPosts.length > 0 ? (
         <div className="flex w-full flex-col space-y-4">
           {paginatedPosts.map((post, index) => (
-            <PostCard post={post} key={index} />
+            <motion.div
+              key={index}
+              initial={{ opacity: 0, x: (index + 1) * -10 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              transition={{ duration: 0.5 }}
+            >
+              <PostCard post={post} />
+            </motion.div>
           ))}
         </div>
       ) : (
