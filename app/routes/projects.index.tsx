@@ -26,7 +26,7 @@ export async function loader({ context, request }: Route.LoaderArgs) {
   const url = new URL(request.url)
   const page = parseInt(url.searchParams.get('page') || '1', 10)
   const query = url.searchParams.get('q')?.toLowerCase().trim() || ''
-  const projectsPerPage = 5
+  const projectsPerPage = 6
 
   const latestProjects = projects
     .filter(
