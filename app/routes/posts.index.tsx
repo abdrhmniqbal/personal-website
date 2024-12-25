@@ -102,7 +102,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           ))}
         </div>
       ) : (
-        <NoResult />
+        <NoResult item="posts" />
       )}
 
       {totalPages > 1 && (

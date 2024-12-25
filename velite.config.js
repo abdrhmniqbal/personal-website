@@ -27,6 +27,27 @@ const posts = defineCollection({
     })),
 })
 
+const projects = defineCollection({
+  name: 'Project',
+  pattern: 'projects/**/*.mdx',
+  schema: s
+    .object({
+      slug: s.path(),
+      title: s.string(),
+      summary: s.string(),
+      createdAt: s.isodate(),
+      body: s.mdx(),
+      type: s.string(),
+      cover: s.image({
+        absoluteRoot: './public',
+      }),
+    })
+    .transform((data) => ({
+      ...data,
+      slugAsParams: data.slug.split('/').slice(1).join('/'),
+    })),
+})
+
 export default defineConfig({
   root: 'contents',
   output: {
@@ -36,7 +57,7 @@ export default defineConfig({
     name: '[name]-[hash:6].[ext]',
     clean: true,
   },
-  collections: { posts },
+  collections: { posts, projects },
   mdx: {
     rehypePlugins: [
       rehypeSlug,

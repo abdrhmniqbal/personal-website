@@ -5,6 +5,7 @@ import { buttonStyles } from '@/ui/components/button'
 const mainMenu = [
   { title: 'Home', href: '/' },
   { title: 'Blog', href: '/posts' },
+  { title: 'Projects', href: '/projects' },
 ]
 
 export default function Navbar() {

@@ -1,100 +1,112 @@
 import { motion } from 'motion/react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router'
-import { posts } from '@/contents/generated'
-import { toTitleCase } from '@/lib/utils/string'
+import { useDebounce } from 'use-debounce'
+import { projects } from '@/contents/generated'
 import NoResult from '@/ui/blocks/no-result'
-import PostCard from '@/ui/blocks/post-card'
-import { Description } from '@/ui/components/field'
+import ProjectCard from '@/ui/blocks/project-card'
 import { Heading } from '@/ui/components/heading'
 import { Pagination } from '@/ui/components/pagination'
-import { type Route } from './+types/posts.tags.$tag'
+import { SearchField } from '@/ui/components/search-field'
+import { type Route } from './+types/projects.index'
 
 export function meta({ data }: Route.MetaArgs) {
   const { APP_NAME, currentPage } = data
   const pageInfo = currentPage > 1 ? `Page ${currentPage}` : ''
   return [
-    { title: `Blog: ${toTitleCase(data.tagFilter)} ${pageInfo} | ${APP_NAME}` },
+    { title: `Projects ${pageInfo} | ${APP_NAME}` },
     {
       name: 'description',
-      content: `Posts tagged with ${toTitleCase(data.tagFilter)} written by ${data.APP_NAME}.`,
+      content: `Latest projects developed by ${data.APP_NAME}.`,
     },
   ]
 }
 
-export async function loader({ context, request, params }: Route.LoaderArgs) {
+export async function loader({ context, request }: Route.LoaderArgs) {
   const url = new URL(request.url)
   const page = parseInt(url.searchParams.get('page') || '1', 10)
-  const postsPerPage = 5
-  const tagFilter = params.tag
+  const query = url.searchParams.get('q')?.toLowerCase().trim() || ''
+  const projectsPerPage = 5
 
-  // Filter posts by tags
-  const filteredPosts = posts.filter(
-    (post) => Array.isArray(post.tags) && post.tags.includes(tagFilter),
-  )
+  const latestProjects = projects
+    .filter(
+      (project) =>
+        project.title.toLowerCase().includes(query) ||
+        project.summary.toLowerCase().includes(query),
+    )
+    .sort(
+      (a, b) =>
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
+    )
 
-  // Sort filtered posts by createdAt in descending order
-  const latestPosts = filteredPosts.sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime(),
-  )
+  const totalProjects = latestProjects.length
+  const totalPages = Math.ceil(totalProjects / projectsPerPage)
 
-  const totalPosts = latestPosts.length
-  const totalPages = Math.ceil(totalPosts / postsPerPage)
-
-  // Paginate the sorted posts
-  const paginatedPosts = latestPosts.slice(
-    (page - 1) * postsPerPage,
-    page * postsPerPage,
+  const paginatedProjects = latestProjects.slice(
+    (page - 1) * projectsPerPage,
+    page * projectsPerPage,
   )
 
   return {
-    paginatedPosts,
+    paginatedProjects,
     totalPages,
-    totalPosts,
-    tagFilter,
     currentPage: page,
+    query,
     APP_NAME: context.env.APP_NAME,
   }
 }
 
 export default function Page({ loaderData }: Route.ComponentProps) {
-  const { paginatedPosts, totalPages, currentPage, tagFilter, totalPosts } =
-    loaderData
+  const { paginatedProjects, totalPages, currentPage, query } = loaderData
+  const [searchValue, setSearchValue] = useState(query || '')
+  const [debouncedSearch] = useDebounce(searchValue, 240)
   const navigate = useNavigate()
 
   const navigateToPage = (page: number) => {
-    const path = page === 1 ? '/posts' : `/posts?page=${page}`
+    const path = page === 1 ? '/projects' : `/projects?page=${page}`
     void navigate(path, { replace: true })
   }
+
+  useEffect(() => {
+    const params = new URLSearchParams()
+    if (debouncedSearch) params.set('q', debouncedSearch)
+    params.set('page', '1')
+    void navigate(`/projects?${params.toString()}`, { replace: true })
+  }, [debouncedSearch, navigate])
 
   return (
     <div className="flex flex-col items-start justify-center space-y-8 pb-[20vh]">
       <div className="flex flex-col space-y-1">
         <Heading level={1} className="pt-8">
-          Tags: {toTitleCase(tagFilter)}
+          Latest Projects
         </Heading>
-        {totalPosts > 0 && (
-          <Description>
-            There are {totalPosts} {totalPosts === 1 ? 'post' : 'posts'} found
-            tagged with {toTitleCase(tagFilter)}.
-          </Description>
-        )}
       </div>
-      {paginatedPosts.length > 0 ? (
-        <div className="flex w-full flex-col space-y-4">
-          {paginatedPosts.map((post, index) => (
+      <SearchField
+        aria-label="Search"
+        placeholder="Search projects..."
+        value={searchValue}
+        onChange={setSearchValue}
+      />
+      {paginatedProjects.length > 0 ? (
+        <div className="grid w-full grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3">
+          {paginatedProjects.map((project, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, x: (index + 1) * -10 }}
+              initial={{
+                opacity: 0,
+                x: index % 3 === 0 ? -20 : index % 3 === 2 ? 20 : 0,
+              }}
               whileInView={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5 }}
             >
-              <PostCard post={post} />
+              <ProjectCard project={project} />
             </motion.div>
           ))}
         </div>
       ) : (
-        <NoResult item='posts' />
+        <NoResult item="projects" />
       )}
+
       {totalPages > 1 && (
         <Pagination className="w-full justify-start">
           <Pagination.List>

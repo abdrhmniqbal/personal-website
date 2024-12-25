@@ -3,12 +3,12 @@ import { cn } from '@/lib/utils/css'
 import { buttonStyles } from '@/ui/components/button'
 import { Heading } from '@/ui/components/heading'
 
-export default function NoResult() {
+export default function NoResult({ item }: { item: string }) {
   return (
     <div className="flex min-h-[300px] w-full flex-col items-center justify-center gap-2">
       <div className="text-center">
         <Heading level={2}>No result found</Heading>
-        <p className="text-muted-fg text-sm">There are no posts to display.</p>
+        <p className="text-muted-fg text-sm">There are no {item} to display.</p>
         <Link
           to="/posts"
           className={cn(
