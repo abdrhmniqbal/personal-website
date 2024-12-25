@@ -1,6 +1,6 @@
 import { type SitemapHandle } from '@forge42/seo-tools/remix/sitemap'
 import { ArrowLeft01Icon } from 'hugeicons-react'
-import { Link } from 'react-router'
+import { Link, useViewTransitionState } from 'react-router'
 import { posts } from '@/contents/generated'
 import { formatDate } from '@/lib/utils/date'
 import { toTitleCase } from '@/lib/utils/string'
@@ -55,21 +55,47 @@ export async function loader({ params, context }: Route.LoaderArgs) {
 
 export default function Page({ loaderData }: Route.ComponentProps) {
   const { post } = loaderData
+  const href = `/posts`
+  const isTransitioning = useViewTransitionState(href)
   return (
     <Container className="max-w-3xl pt-6 pb-[12vh] lg:max-w-3xl lg:pt-12 xl:max-w-4xl 2xl:max-w-4xl">
-      <Link to="/posts" className={buttonStyles({ appearance: 'outline' })}>
+      <Link
+        to={href}
+        className={buttonStyles({ appearance: 'outline' })}
+        viewTransition
+      >
         <ArrowLeft01Icon data-slot="icon" strokeWidth={2} />
         See all posts
       </Link>
       <div className="mt-6 mb-4 flex flex-col">
         <div className="text-muted-fg space-x-2 text-sm">
-          <time>Published on {formatDate(post.createdAt)}</time>
+          <time>
+            Published on{' '}
+            <span
+              style={{
+                viewTransitionName: isTransitioning ? 'post-date' : 'none',
+              }}
+            >
+              {formatDate(post.createdAt)}
+            </span>
+          </time>
           <span>•</span>
-          <span>{post.metadata.readingTime} min read</span>
+          <span
+            style={{
+              viewTransitionName: isTransitioning
+                ? 'post-reading-time'
+                : 'none',
+            }}
+          >
+            {post.metadata.readingTime} min read
+          </span>
         </div>
         <Heading
           level={1}
           className="mt-2 inline-block text-3xl leading-tight font-semibold lg:text-4xl"
+          style={{
+            viewTransitionName: isTransitioning ? 'post-title' : 'none',
+          }}
         >
           {post.title}
         </Heading>

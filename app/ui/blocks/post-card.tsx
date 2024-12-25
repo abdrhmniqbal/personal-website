@@ -1,5 +1,5 @@
 import { ArrowRight02Icon } from 'hugeicons-react'
-import { Link } from 'react-router'
+import { Link, useViewTransitionState } from 'react-router'
 import { type Post } from '@/contents/generated'
 import { formatDate } from '@/lib/utils/date'
 import { toTitleCase } from '@/lib/utils/string'
@@ -12,13 +12,18 @@ interface PostCardProps {
 }
 
 export default function PostCard({ post }: PostCardProps) {
+  const href = `/post/${post.slugAsParams}`
+  const isTransitioning = useViewTransitionState(href)
   return (
-    <Link to={`/post/${post.slugAsParams}`} className="w-full">
+    <Link to={href} className="w-full" viewTransition>
       <Card className="group hover:bg-primary/5 w-full group-hover:cursor-pointer">
         <Card.Header className="pb-2">
           <Card.Title
             className="flex items-center justify-between leading-6 group-hover:underline"
             tracking="tight"
+            style={{
+              viewTransitionName: isTransitioning ? 'post-title' : 'none',
+            }}
           >
             {post.title}
             <ArrowRight02Icon
@@ -27,9 +32,23 @@ export default function PostCard({ post }: PostCardProps) {
             />
           </Card.Title>
           <Card.Description className="text-muted-fg flex items-center gap-1 text-sm">
-            <time>{formatDate(post.createdAt)}</time>
+            <time
+              style={{
+                viewTransitionName: isTransitioning ? 'post-date' : 'none',
+              }}
+            >
+              {formatDate(post.createdAt)}
+            </time>
             <span>•</span>
-            <span>{post.metadata.readingTime} min read</span>
+            <span
+              style={{
+                viewTransitionName: isTransitioning
+                  ? 'post-reading-time'
+                  : 'none',
+              }}
+            >
+              {post.metadata.readingTime} min read
+            </span>
           </Card.Description>
         </Card.Header>
         <Card.Content>{post.summary}</Card.Content>
