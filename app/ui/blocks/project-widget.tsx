@@ -36,7 +36,7 @@ export default function ProjectWidget({ projects }: ProjectWidgetProps) {
               <motion.div
                 initial={{ opacity: 0, x: (index + 1) * -100 }}
                 whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: 0.3 }}
+                transition={{ duration: (index + 1) * 0.4, delay: 0.2 }}
                 viewport={{ once: true }}
               >
                 <ProjectCard project={project} />
