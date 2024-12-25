@@ -34,10 +34,11 @@ export default function ProjectWidget({ projects }: ProjectWidgetProps) {
           {projects.map((project, index) => (
             <Carousel.Item className="sm:basis-1/2 lg:basis-1/3" key={index}>
               <motion.div
-                initial={{ opacity: 0, x: (index + 1) * -100 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: (index + 1) * 0.4, delay: 0.2 }}
-                viewport={{ once: true }}
+                initial={{ opacity: 0 }}
+                whileInView={{ opacity: 1 }}
+                transition={{
+                  duration: 0.5,
+                }}
               >
                 <ProjectCard project={project} />
               </motion.div>
