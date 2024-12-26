@@ -9,36 +9,40 @@ import { defineConfig } from 'vite'
 import babel from 'vite-plugin-babel'
 import tsconfigPaths from 'vite-tsconfig-paths'
 
-export default defineConfig({
-  plugins: [
-    babel({
-      include: ['./app/**/*'],
-      filter: /\.[jt]sx?$/,
-      babelConfig: {
-        presets: [
-          '@babel/preset-typescript',
-          [
-            '@babel/preset-react',
-            {
-              runtime: 'automatic',
-            },
-          ],
-        ],
-        plugins: [['babel-plugin-react-compiler']],
+export default defineConfig(({ mode }) => {
+  const isProduction = mode === 'production'
+  return {
+    plugins: [
+      isProduction &&
+        babel({
+          include: ['./app/**/*'],
+          filter: /\.[jt]sx?$/,
+          babelConfig: {
+            presets: [
+              '@babel/preset-typescript',
+              [
+                '@babel/preset-react',
+                {
+                  runtime: 'automatic',
+                },
+              ],
+            ],
+            plugins: [['babel-plugin-react-compiler']],
+          },
+        }),
+      cloudflareDevProxy(),
+      reactRouterHonoServer({
+        runtime: 'cloudflare',
+        serverEntryPoint: './server/index.ts',
+      }),
+      reactRouterDevTools(),
+      reactRouter(),
+      tsconfigPaths(),
+    ],
+    css: {
+      postcss: {
+        plugins: [tailwindcss, autoprefixer],
       },
-    }),
-    cloudflareDevProxy(),
-    reactRouterHonoServer({
-      runtime: 'cloudflare',
-      serverEntryPoint: './server/index.ts',
-    }),
-    reactRouterDevTools(),
-    reactRouter(),
-    tsconfigPaths(),
-  ],
-  css: {
-    postcss: {
-      plugins: [tailwindcss, autoprefixer],
     },
-  },
+  }
 })
