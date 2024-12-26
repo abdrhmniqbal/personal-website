@@ -24,7 +24,7 @@ export function Footer({ className, userPreference }: FooterProps) {
             </a>
             . The source code is available on{' '}
             <a
-              href="https://github.com/abdrhmniqbal/portfolio"
+              href="https://github.com/abdrhmniqbal/personal-website"
               target="_blank"
               rel="noreferrer"
               className="font-medium underline underline-offset-4"
