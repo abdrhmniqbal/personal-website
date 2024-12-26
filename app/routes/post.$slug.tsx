@@ -115,17 +115,15 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         <div className="mt-8 flex flex-col gap-2 pb-4">
           <span className="text-sm">Tags:</span>
           <div className="flex w-full items-center gap-2 overflow-hidden">
-            {[...post.tags]
-              .sort((a, b) => a.localeCompare(b))
-              .map((tag, index) => (
-                <Link
-                  key={index}
-                  to={`/posts/tags/${tag}`}
-                  className={badgeStyles()}
-                >
-                  {toTitleCase(tag)}
-                </Link>
-              ))}
+            {post.tags.map((tag, index) => (
+              <Link
+                key={index}
+                to={`/posts/tags/${tag}`}
+                className={badgeStyles()}
+              >
+                {toTitleCase(tag)}
+              </Link>
+            ))}
           </div>
         </div>
       )}

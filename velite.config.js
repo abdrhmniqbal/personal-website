@@ -24,6 +24,7 @@ const posts = defineCollection({
     .transform((data) => ({
       ...data,
       slugAsParams: data.slug.split('/').slice(1).join('/'),
+      tags: data.tags.sort((a, b) => a.localeCompare(b)),
     })),
 })
 
@@ -42,8 +43,8 @@ const projects = defineCollection({
         absoluteRoot: './public',
       }),
       technologies: s.string().array().optional(),
-			linkDemo: s.string().optional(),
-			linkSource: s.string().optional(),
+      linkDemo: s.string().optional(),
+      linkSource: s.string().optional(),
     })
     .transform((data) => ({
       ...data,

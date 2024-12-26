@@ -56,17 +56,15 @@ export default function PostCard({ post }: PostCardProps) {
           <Card.Footer className="flex h-[32px] w-full p-0 px-6 pt-0 pb-4">
             <ScrollArea className="flex w-full whitespace-nowrap">
               <div className="flex w-full items-center gap-2 overflow-hidden pb-4">
-                {[...post.tags]
-                  .sort((a, b) => a.localeCompare(b))
-                  .map((tag, index) => (
-                    <Link
-                      key={index}
-                      to={`/posts/tags/${tag}`}
-                      className={badgeStyles()}
-                    >
-                      {toTitleCase(tag)}
-                    </Link>
-                  ))}
+                {post.tags.map((tag, index) => (
+                  <Link
+                    key={index}
+                    to={`/posts/tags/${tag}`}
+                    className={badgeStyles()}
+                  >
+                    {toTitleCase(tag)}
+                  </Link>
+                ))}
               </div>
               <ScrollBar orientation="horizontal" />
             </ScrollArea>
