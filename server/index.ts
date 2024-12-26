@@ -1,5 +1,4 @@
 import { serveStatic } from '@hono/node-server/serve-static'
-import { type Context } from 'hono'
 import { contextStorage } from 'hono/context-storage'
 import { poweredBy } from 'hono/powered-by'
 import { NONCE, secureHeaders } from 'hono/secure-headers'
@@ -61,15 +60,5 @@ export default await createHonoServer({
     if (!isProductionMode) {
       server.use('*', serveStatic({ root: '/public' }))
     }
-
-    /**
-     * Api Route Example
-     */
-    server.get('/api', (c: Context<HonoApp, any, {}>) => {
-      return c.json({
-        message: 'Hello',
-        var: c.env.APP_NAME,
-      })
-    })
   },
 })

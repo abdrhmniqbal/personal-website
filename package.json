@@ -1,5 +1,10 @@
 {
-  "name": "personal",
+  "name": "abdrhmniqbal.my.id",
+  "description": "My personal website.",
+  "author": {
+    "name": "Iqbal Abdurrahman",
+    "url": "https://abdrhmniqbal.my.id"
+  },
   "private": true,
   "type": "module",
   "scripts": {
