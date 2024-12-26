@@ -46,10 +46,13 @@ export function CopyButton({ value }: { value: string }) {
 
   const handleCopy = (command: string) => {
     startTransition(async () => {
-      await navigator.clipboard.writeText(command)
+			toast.promise(navigator.clipboard.writeText(command), {
+				loading: "Copying text...",
+				success: "Text has been copied to clipboard.",
+				error: "Error occurred while copying text to clipboard.",
+			})
       setState('copied')
       await new Promise((resolve) => setTimeout(resolve, 2000))
-      toast('Text has been copied to clipboard.')
       setState('idle')
     })
   }
