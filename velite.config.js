@@ -41,6 +41,9 @@ const projects = defineCollection({
       cover: s.image({
         absoluteRoot: './public',
       }),
+      technologies: s.string().array().optional(),
+			linkDemo: s.string().optional(),
+			linkSource: s.string().optional(),
     })
     .transform((data) => ({
       ...data,

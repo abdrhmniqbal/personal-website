@@ -1,9 +1,10 @@
 import { type SitemapHandle } from '@forge42/seo-tools/remix/sitemap'
-import { ArrowLeft01Icon } from 'hugeicons-react'
+import { ArrowLeft01Icon, LinkSquare02Icon } from 'hugeicons-react'
 import { Link, useViewTransitionState } from 'react-router'
 import { projects } from '@/contents/generated'
 import { cn } from '@/lib/utils/css'
 import { type SitemapData } from '@/routes/sitemap[.]xml'
+import TechIcon from '@/ui/blocks/tech-icon'
 import { buttonStyles } from '@/ui/components/button'
 import { ClientOnly } from '@/ui/components/client-only'
 import { Container } from '@/ui/components/container'
@@ -56,7 +57,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
   const href = `/projects`
   const isTransitioning = useViewTransitionState(href)
   return (
-    <Container className="max-w-3xl pt-6 pb-[12vh] lg:max-w-3xl lg:pt-12 xl:max-w-4xl 2xl:max-w-4xl">
+    <Container className="pt-6 pb-[12vh]">
       <Link
         to={href}
         className={buttonStyles({ appearance: 'outline' })}
@@ -65,7 +66,7 @@ export default function Page({ loaderData }: Route.ComponentProps) {
         <ArrowLeft01Icon data-slot="icon" strokeWidth={2} />
         See all projects
       </Link>
-      <div className="mt-6 mb-4 flex flex-col">
+      <div className="mt-6 mb-2 flex flex-col">
         <div className="text-muted-fg space-x-2 text-sm">
           <span
             style={{
@@ -100,7 +101,38 @@ export default function Page({ loaderData }: Route.ComponentProps) {
           />
         )}
       </div>
-      <ClientOnly>{() => <Mdx code={project.body} />}</ClientOnly>
+      <div className="flex w-full flex-col-reverse gap-8 md:flex-row">
+        <div className="flex w-full flex-col gap-8 md:basis-2/3">
+          {project.technologies && (
+            <div className="mb-2 flex flex-wrap gap-2">
+              {project.technologies.map((tech) => (
+                <TechIcon key={tech} name={tech} width={40} />
+              ))}
+            </div>
+          )}
+          <ClientOnly>{() => <Mdx code={project.body} />}</ClientOnly>
+        </div>
+        <div className="flex w-full flex-col gap-4 md:basis-1/3">
+          {project.linkSource && (
+            <Link
+              to={project.linkSource}
+              className={cn(buttonStyles(), 'w-full')}
+            >
+              Get Started
+              <LinkSquare02Icon data-slot="icon" strokeWidth={2} />
+            </Link>
+          )}
+          {project.linkDemo && (
+            <Link
+              to={project.linkDemo}
+              className={cn(buttonStyles({ appearance: 'outline' }), 'w-full')}
+            >
+              Live Demo
+              <LinkSquare02Icon data-slot="icon" strokeWidth={2} />
+            </Link>
+          )}
+        </div>
+      </div>
     </Container>
   )
 }
